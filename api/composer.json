@@ -1,0 +1,8 @@
+{
+    "require": {
+        "nikic/fast-route": "^1.3"
+    },
+    "require-dev": {
+        "php-sage/sage": "^1.7"
+    }
+}
