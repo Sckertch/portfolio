@@ -108,12 +108,14 @@ onMounted(() => {
       </div>
       <p v-else>Chargement des compétences...</p>
 
-      <!-- Mes lycées -->
-      <h1>Mes lycées</h1>
+      <!-- Mes Formations -->
+      <h1>Mes formations</h1>
       <div class="lycees" v-if="lycees.length">
-        <div v-for="(lycee, index) in lycees" :key="lycee.nom">
-          <LyceeName :lycee="lycee" />
-          <div v-if="index < lycees.length - 1" class="line-decorator"></div>
+        <div v-for="(lycee, index) in lycees" :key="lycee.nom" class="lycee-item">
+          <div class="timeline-dot"></div>
+          <div class="lycee-content">
+            <LyceeName :lycee="lycee" />
+          </div>
         </div>
       </div>
       <p v-else>Chargement des lycées...</p>
@@ -369,10 +371,53 @@ a:hover {
 }
 
 /* Section Lycées */
+/* Conteneur principal des lycées */
 .lycees {
+  position: relative;
+  padding-left: 20px;
+}
+
+/* Ligne verticale de la timeline */
+.lycees::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  /* Ajustez pour aligner avec le point */
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ffd700;
+  /* Couleur de la ligne */
+}
+
+/* Conteneur de chaque lycée */
+.lycee-item {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Point de décoration */
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  background-color: #ffd700;
+  /* Couleur du point */
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Contenu du lycée */
+.lycee-content {
+  flex-grow: 1;
+}
+
+/* Ajouter une marge supérieure aux sections pour espacement */
+.profil-section>h1 {
   margin-top: 40px;
 }
 
