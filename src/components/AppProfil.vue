@@ -2,10 +2,11 @@
 import { ref, onMounted } from 'vue';
 import CompName from './blocks/CompName.vue';
 import CertifName from './blocks/CertifName.vue';
+import LyceeName from './blocks/LyceeName.vue';
 
 const competences = ref([]);
 const certifications = ref([]);
-const logiciels = ref([]);
+const lycees = ref([]);
 
 const getCompetences = () => {
   fetch('https://axilio.duckdns.org/competence/getcompetence')
@@ -27,11 +28,23 @@ const getCertifications = () => {
     .catch(error => console.error(error));
 };
 
+const getLycees = () => {
+  fetch('https://axilio.duckdns.org/lycee/getlycee')
+    .then(response => response.json())
+    .then(data => {
+      lycees.value = data.content;
+      console.log("lycees du fetch", lycees.value);
+    })
+    .catch(error => console.error(error));
+};
+
 onMounted(() => {
   getCompetences();
   getCertifications();
+  getLycees();
   console.log("competences", competences.value);
   console.log("certifications", certifications.value);
+  console.log("lycees", lycees.value);
 });
 </script>
 
@@ -41,8 +54,10 @@ onMounted(() => {
       <!-- À propos de moi -->
       <h1>À propos de moi 📄</h1>
       <p>
-        Je m’appelle LEDA Mathis, je suis âgé de 18 ans. Je suis actuellement étudiant au lycée de Baimbridge, en première année de BTS Services Informatiques aux Organisations.
-        Depuis que je suis petit, j’ai toujours été attiré par l’informatique et les nouvelles technologies. De ce fait, je me suis tourné vers ces études.
+        Je m’appelle LEDA Mathis, je suis âgé de 18 ans. Je suis actuellement étudiant au lycée de Baimbridge, en
+        première année de BTS Services Informatiques aux Organisations.
+        Depuis que je suis petit, j’ai toujours été attiré par l’informatique et les nouvelles technologies. De ce fait,
+        je me suis tourné vers ces études.
       </p>
       <a href="#" class="btn-cv">Télécharger mon CV</a>
 
@@ -93,6 +108,16 @@ onMounted(() => {
       </div>
       <p v-else>Chargement des compétences...</p>
 
+      <!-- Mes lycées -->
+      <h1>Mes lycées</h1>
+      <div class="lycees" v-if="lycees.length">
+        <div v-for="(lycee, index) in lycees" :key="lycee.nom">
+          <LyceeName :lycee="lycee" />
+          <div v-if="index < lycees.length - 1" class="line-decorator"></div>
+        </div>
+      </div>
+      <p v-else>Chargement des lycées...</p>
+
       <!-- Mes certifications -->
       <h1>Mes certifications</h1>
       <div class="certifications" v-if="certifications.length">
@@ -113,9 +138,10 @@ onMounted(() => {
   padding: 0;
 }
 
-
-
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: 'Rockwell', serif;
 }
 
@@ -193,13 +219,15 @@ a:hover {
 .centres-interet .item img,
 .centres-interet .item video {
   width: 100%;
-  max-width: 200px; /* Réduction de la taille des éléments */
+  max-width: 200px;
+  /* Réduction de la taille des éléments */
   border-radius: 10px;
   margin-bottom: 15px;
 }
 
 .centres-interet .item h2 {
-  font-size: 1.2rem; /* Taille de police réduite */
+  font-size: 1.2rem;
+  /* Taille de police réduite */
   margin-bottom: 10px;
   color: #ffd700;
 }
@@ -229,19 +257,22 @@ a:hover {
 
 .qualites .item img {
   width: 100%;
-  max-width: 150px; /* Réduction de la taille des éléments */
+  max-width: 150px;
+  /* Réduction de la taille des éléments */
   border-radius: 10px;
   margin-bottom: 15px;
 }
 
 .qualites .item h2 {
-  font-size: 1.2rem; /* Taille de police réduite */
+  font-size: 1.2rem;
+  /* Taille de police réduite */
   margin-bottom: 10px;
   color: #ffd700;
 }
 
 .qualites .item h4 {
-  font-size: 0.9rem; /* Taille de police réduite */
+  font-size: 0.9rem;
+  /* Taille de police réduite */
   line-height: 1.4;
 }
 
@@ -320,7 +351,8 @@ a:hover {
 
 .certification-item img {
   width: 100%;
-  max-width: 250px; /* Augmenter la taille maximale de l'image */
+  max-width: 250px;
+  /* Augmenter la taille maximale de l'image */
   border-radius: 10px;
   margin-bottom: 15px;
 }
@@ -336,8 +368,17 @@ a:hover {
   color: #fff;
 }
 
+/* Section Lycées */
+.lycees {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+
   .centres-interet .item,
   .qualites .item,
   .competence-item,
@@ -347,6 +388,7 @@ a:hover {
 }
 
 @media (max-width: 480px) {
+
   .centres-interet .item,
   .qualites .item,
   .competence-item,
