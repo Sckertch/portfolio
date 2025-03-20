@@ -1,67 +1,331 @@
 <template>
-    <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequatur illo dignissimos saepe, quam numquam dolore id eius, consectetur ducimus voluptatibus modi illum excepturi mollitia. Voluptates eos laudantium aspernatur. Dicta, totam.
-        Amet exercitationem minima aliquid, sequi illum optio repellendus corrupti ex sunt? Sit voluptatibus amet alias ducimus temporibus provident voluptates ullam. Autem laborum deserunt reiciendis id obcaecati? Consectetur, ex id! Deleniti?
-        Fugit officiis doloribus odio error excepturi quod! Distinctio cupiditate nemo alias repudiandae iusto voluptate, asperiores inventore. Aut, maiores autem laboriosam dolor tempora at veniam qui eveniet, accusantium rerum distinctio dignissimos!
-        Explicabo, laudantium? Autem temporibus cumque nihil dolores amet esse, dolorum molestias minus tempora ipsam, excepturi consectetur similique! Dolorum vero, corrupti sed reiciendis nihil dolore nulla mollitia non vitae, rem fugit.
-        Impedit vel ut beatae veritatis laboriosam illo consequuntur facilis iure inventore quas, nesciunt temporibus alias sed. Provident nisi quod rerum veritatis iusto suscipit. Quisquam assumenda cupiditate optio, exercitationem odio alias?
-        Blanditiis vel tenetur pariatur dolorem dicta nulla aperiam, voluptatem voluptatibus. Laboriosam expedita, eligendi veniam vel dolore velit quia placeat soluta itaque consectetur. Minima molestiae asperiores, dicta veritatis facilis sequi. Quas?
-        Magnam explicabo iste, praesentium voluptatum aperiam laudantium, incidunt illo tempore rerum voluptatem numquam rem sunt eaque placeat nisi, quidem in nostrum atque. Error illo eveniet, quisquam in optio magni eum!
-        Quas itaque ipsa dolore quam praesentium maiores voluptate porro rem dicta, dolor, mollitia quidem quae minima? Tempora tempore adipisci saepe iure neque delectus, deserunt praesentium, dicta, quisquam fugit doloribus reiciendis?
-        Quos aperiam, rerum sit neque ratione perferendis amet expedita, tempore placeat dolore vitae ex, illum voluptatum eligendi impedit architecto? Officiis debitis optio voluptatem tempore quia quasi adipisci illum et vitae!
-        Incidunt tempora maxime rerum dignissimos consequatur. Expedita in, nostrum nesciunt aut alias accusantium rem eius natus cupiditate fugit vitae blanditiis, reiciendis corrupti, sequi voluptatem temporibus quidem tempore voluptatibus qui voluptatum!
-        Cum, illum quos magni veniam cupiditate tenetur tempora amet aspernatur, quam, consequatur quibusdam reprehenderit delectus veritatis similique sint ut labore vero illo animi eligendi debitis aliquam in commodi. Eaque, temporibus!
-        Quod et nihil, incidunt quas adipisci ab maxime modi natus asperiores voluptas beatae facilis qui quis possimus voluptate debitis nesciunt reiciendis ad nobis nostrum ea dignissimos aspernatur voluptatibus temporibus? Omnis?
-        Ratione officiis sint animi, voluptatibus at aut, quae nisi illum nemo voluptates alias porro voluptatum inventore quam laboriosam mollitia incidunt. Sunt saepe veritatis nam maxime numquam iusto. Culpa, explicabo eveniet.
-        Provident quasi dignissimos perferendis iure, dolorem assumenda dolores distinctio officia nulla eaque voluptatem aspernatur et quae beatae totam sint illum! Eos, officia laborum quae alias labore voluptas ipsam possimus obcaecati?
-        Enim repudiandae vitae incidunt impedit? Debitis ea architecto rerum quas voluptates ex. Possimus voluptas nesciunt corrupti. Quos aperiam necessitatibus modi? Atque fugiat magnam ipsum beatae fugit quos nostrum, modi amet.
-        Culpa quibusdam repellat iure quaerat id dolorum nam voluptas aperiam dignissimos quam, odit necessitatibus ut itaque nulla, quidem quod ducimus maxime voluptatem, sint esse doloremque omnis. Ducimus mollitia aliquid harum?
-        Amet quos iusto aliquid aut adipisci beatae possimus dicta distinctio. Facere neque, officia sequi laudantium perspiciatis sed, laborum deserunt mollitia magni voluptates consectetur praesentium autem expedita! Pariatur eos officia at!
-        Perferendis quibusdam suscipit cupiditate culpa nemo dolorum, voluptatem est harum facilis quae earum necessitatibus veritatis illo voluptas! Quae, exercitationem odit. Tempora et aliquam odit, exercitationem unde atque id vero veniam?
-        Dolorem ex ullam quasi voluptatibus iste. Est quos laborum voluptate excepturi ratione mollitia amet, maiores aliquam nisi beatae deserunt aliquid laudantium praesentium error obcaecati porro sed saepe fugiat recusandae quas?
-        Vel minima quisquam sit sint. Quia laborum totam inventore quaerat maiores ea sit saepe neque, natus incidunt, unde iure eaque error veritatis possimus ipsum dolore dicta fugiat, quae quidem odit.
-        Quidem repellendus exercitationem laboriosam nostrum ducimus, corporis commodi praesentium necessitatibus vitae nihil. Nulla, pariatur sit, iusto alias quasi nisi, minus doloribus ab veritatis quod aperiam! Error illum dignissimos dolorum reprehenderit?
-        Beatae nulla voluptas eaque, maxime assumenda cum distinctio ab repellendus omnis consectetur vero quibusdam porro vel, blanditiis similique amet. Natus expedita nesciunt earum, exercitationem quis alias. Rerum amet ducimus natus.
-        Minus cupiditate aperiam aliquam, at, corporis cum labore aut, accusamus explicabo qui architecto. Nisi, vel? Aspernatur, accusamus nesciunt. Alias in voluptatum harum nesciunt beatae magnam reprehenderit officia aliquam! Quas, distinctio!
-        Ipsam impedit illo asperiores nisi ducimus doloremque debitis maiores odio, unde sunt, fugiat dolore illum enim non recusandae quam maxime eaque nesciunt numquam. Magnam autem harum expedita, et saepe distinctio?
-        Similique, dignissimos? Voluptatibus id vel ipsa laborum optio commodi quo molestias temporibus natus ducimus, atque voluptatum? Officiis voluptates iure sit nihil laudantium porro exercitationem ullam, temporibus optio rem, aut natus?
-        Sint architecto ratione porro deserunt, amet voluptatum ex alias, iure nam cupiditate id molestias, dolorem beatae. Commodi quidem, impedit modi dolore sequi hic doloribus, quisquam autem exercitationem harum dolores! Aspernatur.
-        Eveniet exercitationem aspernatur veritatis, velit nisi aliquam earum distinctio, vel minima, quasi expedita! Nostrum impedit nihil fugit qui illum? Eos totam sed natus numquam eius architecto tenetur laboriosam maxime rem?
-        Porro eligendi suscipit reiciendis reprehenderit, est, autem numquam odit accusamus aut repellat molestias vel facilis, sapiente aperiam rerum labore nihil consequatur possimus ducimus placeat magni. Magnam obcaecati laborum eaque pariatur?
-        Quos repellendus consequatur dolores molestiae culpa voluptatem. Iste corrupti a eveniet adipisci, cum sint quae possimus assumenda eligendi quod necessitatibus, quibusdam harum rem quaerat inventore laudantium. Totam itaque corporis dicta!
-        Facilis suscipit totam, quos assumenda doloremque perspiciatis voluptatibus itaque soluta nostrum, dolores error sed sint cum consequatur, deserunt praesentium. Omnis perspiciatis totam possimus explicabo dolore fugiat quam. Maxime, iure nobis.
-        Voluptatum debitis assumenda consequuntur corporis, cum sunt id. Tenetur numquam debitis cum tempore nostrum ducimus totam voluptatum obcaecati repellat, suscipit consequatur esse, cumque culpa at ipsam possimus maiores, perspiciatis ipsum!
-        Quaerat voluptatibus aliquam vitae ex esse ratione quasi id, commodi ipsa quibusdam cumque, quia repellat dolorum quas quod aspernatur illum. Et praesentium pariatur commodi consectetur voluptatibus impedit nesciunt maiores odio.
-        Eveniet facere quo nesciunt excepturi sint dolore, natus eos corporis expedita odit voluptatum nisi nulla molestias, perferendis velit nihil, error impedit debitis obcaecati in harum fugit architecto. Qui, quo perspiciatis.
-        Distinctio facere ut accusantium ipsam vel, omnis eum voluptatem provident maxime est sunt perferendis ratione enim eaque doloremque dolorem laboriosam, dolorum sit unde id. Quisquam aliquam sit ipsam molestias eligendi!
-        Illo dolorem ullam blanditiis nobis cum provident cupiditate quam facilis, magni dicta, commodi aut deleniti alias, labore aliquid. Doloremque suscipit placeat perspiciatis autem animi dolorum quis distinctio commodi optio ipsum.
-        Doloribus provident laborum quo cum, quos repellendus pariatur autem fugiat suscipit illum facilis in dolorum nihil dolor commodi sint? Neque aperiam quasi vitae corrupti. Nemo tempora ipsam accusamus architecto explicabo.
-        Iste accusantium quos blanditiis cum corrupti dolorem dolore hic corporis. Nisi ipsa minus aut, magnam non velit culpa dolor eaque minima! Numquam libero natus quo iste debitis dignissimos vitae fugit!
-        Voluptates quos facere sequi laboriosam, qui aut autem amet pariatur quo omnis nulla similique cupiditate aliquid natus exercitationem quidem iusto esse tempora, sit libero aspernatur. Enim atque nihil iste exercitationem?
-        Error laudantium at laborum recusandae pariatur totam, nam nobis officiis sed unde ex repudiandae in tempora incidunt quis officia esse, asperiores eaque ut eum ratione cum ipsam! Doloremque, explicabo voluptates.
-        Laudantium quas cumque numquam magni perspiciatis. Maiores facere voluptates adipisci rerum reprehenderit iusto exercitationem aliquam quis, tenetur totam dolor eveniet, dolorum est quos? Commodi minus ipsam necessitatibus magni quaerat tempora.
-        Illum, aperiam. Eum voluptatem laboriosam magni? Quibusdam nesciunt atque ratione molestiae fugiat corporis animi voluptate fugit voluptatem quod, harum explicabo, optio laborum corrupti? Perferendis, ab itaque ratione sequi veniam explicabo.
-        Hic mollitia explicabo temporibus modi facilis quam, quas ratione non similique repudiandae minus eaque unde autem adipisci magni? Alias sunt incidunt cumque architecto ab vel cupiditate illum quasi aliquid voluptatibus?
-        Dolor aliquid, ut eos soluta quidem sapiente reprehenderit nemo repellendus error quis mollitia dicta expedita magnam velit asperiores doloribus ipsa saepe beatae nulla! Obcaecati suscipit aperiam adipisci amet tenetur fugit?
-        Blanditiis unde nihil necessitatibus dicta rem sit quibusdam mollitia vel, obcaecati eum repellat voluptatum dignissimos. Nesciunt, optio asperiores veritatis illo ea laudantium numquam error reiciendis. Earum eius laboriosam minima. Quos!
-        Accusantium, veniam quam officiis illo adipisci rerum excepturi nemo perferendis? Incidunt ipsam ad vel dolores repellat expedita libero praesentium, alias magni totam iste doloremque, consectetur amet, cupiditate voluptas unde perspiciatis.
-        Vitae dolores, officiis aut nulla ullam blanditiis dolorem consequuntur neque sunt repudiandae facilis modi molestias culpa voluptatibus ipsam, nemo ratione eum harum libero omnis dignissimos quae! Dicta alias iure a!
-        Consequatur, tempora, reprehenderit consequuntur praesentium necessitatibus eius porro quo soluta itaque incidunt asperiores quos temporibus officia. Consectetur quidem, nam architecto atque repellendus aut recusandae? Magni blanditiis nisi ullam optio quos.
-        Iste sint ipsam sequi cupiditate veritatis provident. Nisi, repellendus, fugiat voluptatem esse quia est expedita explicabo a, nobis neque odio labore eius. Quidem repellat fugit eos ducimus, excepturi molestiae est!
-        Nihil officiis itaque distinctio sapiente unde maiores quo quas mollitia suscipit aliquid vel sequi quibusdam praesentium, dolorem autem, animi accusamus debitis? Aliquam, suscipit dolores commodi nobis quo facere praesentium consequatur.
-        Doloribus fuga ea repellendus a possimus qui adipisci eum asperiores inventore sed ipsam libero dolorem, quaerat perferendis similique autem aperiam nihil? Ut accusamus aut adipisci, nam ipsam est. Libero, molestiae?
-        Obcaecati, optio. Aut, voluptatem, eveniet perferendis vitae nesciunt totam culpa doloremque nulla excepturi illum deleniti quas quod enim sint. Debitis accusantium totam rerum nam, perspiciatis quos omnis facere ipsa cum!
-        Odit aut quidem iure rem. Numquam eveniet dignissimos deleniti harum rerum assumenda maiores in? Facilis, excepturi fuga. Quisquam labore ducimus delectus at. Quaerat tempora alias, officiis dicta sint obcaecati expedita.
-    </p>
-  
+    <div class="bts-container">
+        <section class="bts-header">
+            <h1>BTS Services Informatiques aux Organisations</h1>
+            <div class="bts-intro">
+                <img :src="'https://portoimages.duckdns.org/sio.png'" alt="Logo BTS SIO" class="bts-logo">
+                <p class="tagline">Formation diplômante de niveau Bac+2 aux métiers de l'informatique</p>
+            </div>
+        </section>
+
+        <section class="bts-overview">
+            <h2>Présentation générale</h2>
+            <p>
+                Le BTS SIO (Services Informatiques aux Organisations) est une formation sur deux ans qui prépare aux
+                métiers de l'informatique d'entreprise. Ce diplôme d'État de niveau Bac+2 permet d'acquérir des
+                compétences techniques et managériales pour répondre aux besoins informatiques des organisations.
+            </p>
+            <p>
+                La formation combine enseignements théoriques, projets pratiques et stages en entreprise (10 à 12
+                semaines réparties sur les deux années), offrant ainsi une expérience professionnelle concrète avant
+                l'entrée sur le marché du travail.
+            </p>
+        </section>
+
+        <section class="bts-options">
+            <h2>Les deux options du BTS SIO</h2>
+
+            <div class="option-card">
+                <div class="option-header">
+                    <h3>Option SLAM</h3>
+                    <span class="option-subtitle">Solutions Logicielles et Applications Métiers</span>
+                </div>
+                <p>
+                    L'option SLAM forme aux métiers du développement d'applications. Les étudiants apprennent à:
+                </p>
+                <ul>
+                    <li>Analyser les besoins des utilisateurs</li>
+                    <li>Concevoir des applications</li>
+                    <li>Développer des solutions logicielles</li>
+                    <li>Maintenir et faire évoluer les applications</li>
+                    <li>Gérer des bases de données</li>
+                    <li>Assurer la qualité des développements</li>
+                </ul>
+                <p>
+                    <strong>Technologies étudiées :</strong> Java, PHP, JavaScript, HTML/CSS, SQL, UML, frameworks web,
+                    méthodologies Agile...
+                </p>
+            </div>
+
+            <div class="option-card">
+                <div class="option-header">
+                    <h3>Option SISR</h3>
+                    <span class="option-subtitle">Solutions d'Infrastructure, Systèmes et Réseaux</span>
+                </div>
+                <p>
+                    L'option SISR forme aux métiers liés aux infrastructures informatiques. Les étudiants apprennent à:
+                </p>
+                <ul>
+                    <li>Administrer des systèmes et réseaux</li>
+                    <li>Gérer l'infrastructure informatique</li>
+                    <li>Sécuriser des réseaux et systèmes</li>
+                    <li>Assurer la maintenance des équipements</li>
+                    <li>Résoudre des incidents</li>
+                    <li>Installer et configurer des solutions d'infrastructures</li>
+                </ul>
+                <p>
+                    <strong>Technologies étudiées :</strong> Windows Server, Linux, TCP/IP, routage, pare-feu, cloud
+                    computing, virtualisation, VPN...
+                </p>
+            </div>
+        </section>
+
+        <section class="bts-competences">
+            <h2>Compétences développées</h2>
+
+            <div class="competences-grid">
+                <div class="competence-item">
+                    <h4>Compétences techniques</h4>
+                    <ul>
+                        <li>Programmation et développement</li>
+                        <li>Administration de systèmes et réseaux</li>
+                        <li>Cybersécurité</li>
+                        <li>Bases de données</li>
+                        <li>Virtualisation et cloud</li>
+                    </ul>
+                </div>
+
+                <div class="competence-item">
+                    <h4>Compétences méthodologiques</h4>
+                    <ul>
+                        <li>Gestion de projet</li>
+                        <li>Méthodes agiles</li>
+                        <li>Documentation technique</li>
+                        <li>Tests et validation</li>
+                        <li>Veille technologique</li>
+                    </ul>
+                </div>
+
+                <div class="competence-item">
+                    <h4>Compétences transversales</h4>
+                    <ul>
+                        <li>Communication professionnelle</li>
+                        <li>Travail en équipe</li>
+                        <li>Anglais technique</li>
+                        <li>Analyse et résolution de problèmes</li>
+                        <li>Droit et économie</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bts-debouches">
+            <h2>Débouchés professionnels</h2>
+
+            <div class="debouches-container">
+                <div class="debouche-card">
+                    <h4>Débouchés SLAM</h4>
+                    <ul>
+                        <li>Développeur d'applications</li>
+                        <li>Programmeur analyste</li>
+                        <li>Développeur web/mobile</li>
+                        <li>Technicien d'études informatiques</li>
+                        <li>Intégrateur d'applications</li>
+                        <li>Gestionnaire de bases de données</li>
+                    </ul>
+                </div>
+
+                <div class="debouche-card">
+                    <h4>Débouchés SISR</h4>
+                    <ul>
+                        <li>Administrateur systèmes et réseaux</li>
+                        <li>Technicien d'infrastructure</li>
+                        <li>Technicien support</li>
+                        <li>Technicien sécurité</li>
+                        <li>Technicien cloud</li>
+                        <li>Gestionnaire de parc informatique</li>
+                    </ul>
+                </div>
+
+                <div class="debouche-card">
+                    <h4>Poursuites d'études</h4>
+                    <ul>
+                        <li>Licence professionnelle (Bac+3)</li>
+                        <li>École d'ingénieur informatique</li>
+                        <li>Bachelor informatique</li>
+                        <li>Masters spécialisés</li>
+                        <li>Formation en alternance</li>
+                        <li>Certification professionnelle</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="bts-personal">
+            <h2>Mon parcours en BTS SIO</h2>
+            <p>
+                J'ai choisi la formation BTS SIO, option SLAM, pour approfondir ma passion pour le développement
+                d'applications. Attiré par l'informatique depuis mon plus jeune âge, cette formation me permet
+                d'acquérir des compétences techniques solides tout en me préparant au monde professionnel.
+            </p>
+            <p>
+                Ce que j'apprécie particulièrement dans cette formation :
+            </p>
+            <ul>
+                <li>L'équilibre entre théorie et pratique</li>
+                <li>Les projets en équipe qui reflètent les conditions réelles de travail</li>
+                <li>La découverte de nombreux langages et technologies</li>
+                <li>L'opportunité de créer des applications complètes</li>
+                <li>Les stages qui m'ont permis de mettre en application mes connaissances</li>
+            </ul>
+            <p>
+                Cette formation constitue une base solide pour mon projet professionnel : devenir développeur full-stack
+                spécialisé dans les applications web innovantes.
+            </p>
+        </section>
+    </div>
 </template>
 
-<script>
-export default {
+<script setup>
 
-}
 </script>
 
-<style>
+<style scoped>
+.bts-container {
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
 
+.bts-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.bts-header h1 {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin-bottom: 20px;
+}
+
+.bts-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bts-logo {
+    max-width: 200px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.tagline {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #ccc;
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #ffd700;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    padding-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+h4 {
+    font-size: 1.3rem;
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+li {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.option-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.option-header {
+    margin-bottom: 15px;
+}
+
+.option-subtitle {
+    font-size: 1.1rem;
+    color: #ccc;
+    font-style: italic;
+}
+
+.competences-grid,
+.debouches-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.competence-item,
+.debouche-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: calc(33% - 20px);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.competence-item:hover,
+.debouche-card:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.bts-personal {
+    background-color: rgba(255, 215, 0, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .competence-item,
+    .debouche-card {
+        width: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 576px) {
+
+    .competence-item,
+    .debouche-card {
+        width: 100%;
+    }
+}
 </style>
