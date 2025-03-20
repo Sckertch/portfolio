@@ -1,6 +1,6 @@
 <template>
   <div class="certification-item">
-    <img :src="'http://portoimages.duckdns.org/' + certification.image" alt="Image de la certification">
+    <img :src="'https://portoimages.duckdns.org/' + certification.image" alt="Image de la certification">
     <h2>{{ certification.nom }}</h2>
     <p>{{ certification.description }}</p>
   </div>

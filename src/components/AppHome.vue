@@ -58,22 +58,11 @@ body {
   padding: 20px;
   color: #fff;
   overflow: hidden;
-  background: linear-gradient(135deg, #1e3c72, #2a5298, #6a11cb, #2575fc);
   background-size: 400% 400%;
   animation: gradientAnimation 10s ease infinite;
 }
 
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+
 
 /* Style pour l'image et le texte */
 #img-code {

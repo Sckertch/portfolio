@@ -1,6 +1,6 @@
 <template>
     <div class="competence-item">
-        <img :src="'http://portoimages.duckdns.org/' + competence.image" alt="Image de la compétence">
+        <img :src="'https://portoimages.duckdns.org/' + competence.image" alt="Image de la compétence">
         <h2>{{ competence.nom }}</h2>
         <div class="progress-bar">
         <div class="progress" :style="{ width: competence.niveau + '%' }"></div>

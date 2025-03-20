@@ -5,9 +5,10 @@ import CertifName from './blocks/CertifName.vue';
 
 const competences = ref([]);
 const certifications = ref([]);
+const logiciels = ref([]);
 
 const getCompetences = () => {
-  fetch('http://axilio.duckdns.org/competence/getcompetence')
+  fetch('https://axilio.duckdns.org/competence/getcompetence')
     .then(response => response.json())
     .then(data => {
       competences.value = data.content;
@@ -17,7 +18,7 @@ const getCompetences = () => {
 };
 
 const getCertifications = () => {
-  fetch('http://axilio.duckdns.org/certification/getcertification')
+  fetch('https://axilio.duckdns.org/certification/getcertification')
     .then(response => response.json())
     .then(data => {
       certifications.value = data.content;
@@ -106,19 +107,13 @@ onMounted(() => {
 /* Styles globaux */
 .test {
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #1e3c72, #2a5298, #6a11cb, #2575fc);
   background-size: 400% 400%;
-  animation: gradientAnimation 10s ease infinite;
   color: #fff;
   margin: 0;
   padding: 0;
 }
 
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+
 
 h1, h2, h3, h4 {
   font-family: 'Rockwell', serif;
@@ -325,7 +320,7 @@ a:hover {
 
 .certification-item img {
   width: 100%;
-  max-width: 150px;
+  max-width: 250px; /* Augmenter la taille maximale de l'image */
   border-radius: 10px;
   margin-bottom: 15px;
 }
