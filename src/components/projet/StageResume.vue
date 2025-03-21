@@ -519,11 +519,19 @@
 .accordion-body {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 25px;
+    color: #e0e0e0;
 }
 
 /* Sections de contenu */
 .stage-section {
-    margin-bottom: 35px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-radius: 15%;
+    background-color: rgba(255, 255, 255, 0.02);
+    padding: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 15%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .section-title {
@@ -543,6 +551,7 @@
     margin-bottom: 10px;
     padding-left: 25px;
     position: relative;
+    color: #e0e0e0;
 }
 
 .problems-list li::before {
@@ -572,13 +581,13 @@
 
 .task-title {
     font-size: 1.2rem;
-    color: #ccc;
+    color: #e0e0e0;
     margin-bottom: 15px;
 }
 
 .task-description {
     margin-bottom: 15px;
-    color: #aaa;
+    color: #d0d0d0;
     font-style: italic;
 }
 
@@ -622,7 +631,7 @@
 
 .image-caption {
     font-size: 0.9rem;
-    color: #999;
+    color: #b0b0b0;
     text-align: center;
     padding: 8px 5px;
     margin: 0;
@@ -643,6 +652,16 @@
     border-radius: 20px;
     padding: 5px 12px;
     font-size: 0.9rem;
+}
+
+/* Assurer que tous les paragraphes sont lisibles */
+p {
+    color: #e0e0e0;
+}
+
+/* S'assurer que les éléments des listes sont bien visibles */
+li {
+    color: #e0e0e0;
 }
 
 /* Responsive design */
