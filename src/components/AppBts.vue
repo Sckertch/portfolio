@@ -186,30 +186,52 @@
     color: #fff;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: 60px 20px;
+    background-color: #121212;
 }
 
+/* En-tête avec style section-title comme dans les autres composants */
 .bts-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 }
 
 .bts-header h1 {
     font-size: 2.5rem;
     color: #ffd700;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.bts-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #ffd700;
 }
 
 .bts-intro {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
 }
 
 .bts-logo {
     max-width: 200px;
     border-radius: 10px;
     margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.bts-logo:hover {
+    transform: scale(1.05);
 }
 
 .tagline {
@@ -218,16 +240,27 @@
     color: #ccc;
 }
 
+/* Sections avec style similaire à PartStage et PartProjet */
 section {
     margin-bottom: 60px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 h2 {
     font-size: 2rem;
     color: #ffd700;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-    padding-bottom: 10px;
+    padding-bottom: 15px;
 }
 
 h3 {
@@ -247,6 +280,7 @@ p {
     line-height: 1.6;
     margin-bottom: 15px;
     text-align: justify;
+    color: #e0e0e0;
 }
 
 ul {
@@ -258,19 +292,23 @@ li {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 8px;
+    color: #e0e0e0;
 }
 
+/* Cards avec style similaire au projet/stage */
 .option-card {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
     transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .option-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px);
     background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
 .option-header {
@@ -298,18 +336,26 @@ li {
     padding: 20px;
     width: calc(33% - 20px);
     transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .competence-item:hover,
 .debouche-card:hover {
     transform: translateY(-5px);
     background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
+/* Section personnelle avec style similaire à la carte de stage */
 .bts-personal {
-    background-color: rgba(255, 215, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.bts-personal:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Responsive Design */
@@ -318,6 +364,14 @@ li {
     .competence-item,
     .debouche-card {
         width: calc(50% - 15px);
+    }
+
+    section {
+        padding: 20px;
+    }
+
+    .bts-header h1 {
+        font-size: 2rem;
     }
 }
 

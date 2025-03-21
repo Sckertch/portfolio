@@ -134,6 +134,8 @@ onMounted(() => {
 /* Styles globaux */
 .test {
   font-family: 'Roboto', sans-serif;
+  background-color: #000000;
+  /* Fond noir */
   background-size: 400% 400%;
   color: #fff;
   margin: 0;
@@ -150,6 +152,7 @@ h4 {
 a {
   color: #fff;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 a:hover {
@@ -158,15 +161,33 @@ a:hover {
 
 /* Section À propos de moi */
 .profil-section {
-  padding: 50px 20px;
+  padding: 60px 20px;
   margin: 0 auto;
+  max-width: 1200px;
+  background-color: #121212;
+  /* Couleur de fond secondaire si nécessaire */
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
 }
 
 .profil-section h1 {
   font-size: 2.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-align: center;
   color: #ffd700;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.profil-section h1::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #ffd700;
 }
 
 .profil-section p {
@@ -174,25 +195,29 @@ a:hover {
   line-height: 1.6;
   text-align: justify;
   margin-bottom: 30px;
+  color: #e0e0e0;
 }
 
 /* Bouton de téléchargement du CV */
 .btn-cv {
   display: inline-block;
   padding: 12px 24px;
-  background-color: #302c17;
-  color: #ffffff;
-  border-radius: 5px;
+  background-color: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+  border: 2px solid #ffd700;
+  border-radius: 8px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
   margin-bottom: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-cv:hover {
-  background-color: #e6b800;
-  transform: translateY(-2px);
+  background-color: rgba(255, 215, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Section Centres d'intérêt */
@@ -206,32 +231,35 @@ a:hover {
 
 .centres-interet .item {
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 15px;
+  padding: 20px;
   width: 30%;
   text-align: center;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .centres-interet .item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .centres-interet .item img,
 .centres-interet .item video {
   width: 100%;
   max-width: 200px;
-  /* Réduction de la taille des éléments */
   border-radius: 10px;
   margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .centres-interet .item h2 {
-  font-size: 1.2rem;
-  /* Taille de police réduite */
+  font-size: 1.3rem;
   margin-bottom: 10px;
   color: #ffd700;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  padding-bottom: 10px;
 }
 
 /* Section Qualités */
@@ -245,37 +273,40 @@ a:hover {
 
 .qualites .item {
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 15px;
+  padding: 20px;
   width: 22%;
   text-align: center;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .qualites .item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .qualites .item img {
   width: 100%;
   max-width: 150px;
-  /* Réduction de la taille des éléments */
   border-radius: 10px;
   margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .qualites .item h2 {
-  font-size: 1.2rem;
-  /* Taille de police réduite */
+  font-size: 1.3rem;
   margin-bottom: 10px;
   color: #ffd700;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  padding-bottom: 10px;
 }
 
 .qualites .item h4 {
-  font-size: 0.9rem;
-  /* Taille de police réduite */
+  font-size: 1rem;
   line-height: 1.4;
+  color: #e0e0e0;
 }
 
 /* Section Compétences */
@@ -289,16 +320,18 @@ a:hover {
 
 .competence-item {
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 15px;
+  padding: 20px;
   width: 30%;
   text-align: center;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .competence-item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .competence-item img {
@@ -306,20 +339,24 @@ a:hover {
   max-width: 150px;
   border-radius: 10px;
   margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .competence-item h2 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin-bottom: 10px;
   color: #ffd700;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  padding-bottom: 10px;
 }
 
 .progress-bar {
-  background-color: #ddd;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   overflow: hidden;
   height: 10px;
   margin-top: 10px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .progress {
@@ -339,35 +376,39 @@ a:hover {
 
 .certification-item {
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 15px;
+  padding: 20px;
   width: 30%;
   text-align: center;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .certification-item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .certification-item img {
   width: 100%;
   max-width: 250px;
-  /* Augmenter la taille maximale de l'image */
   border-radius: 10px;
   margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .certification-item h2 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin-bottom: 10px;
   color: #ffd700;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  padding-bottom: 10px;
 }
 
 .certification-item p {
   font-size: 1rem;
-  color: #fff;
+  color: #e0e0e0;
 }
 
 /* Section Lycées */
@@ -375,6 +416,7 @@ a:hover {
 .lycees {
   position: relative;
   padding-left: 20px;
+  margin-top: 40px;
 }
 
 /* Ligne verticale de la timeline */
@@ -382,19 +424,18 @@ a:hover {
   content: '';
   position: absolute;
   left: 9px;
-  /* Ajustez pour aligner avec le point */
   top: 0;
   bottom: 0;
   width: 2px;
   background-color: #ffd700;
-  /* Couleur de la ligne */
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
 /* Conteneur de chaque lycée */
 .lycee-item {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   position: relative;
 }
 
@@ -403,26 +444,61 @@ a:hover {
   width: 20px;
   height: 20px;
   background-color: #ffd700;
-  /* Couleur du point */
   border-radius: 50%;
   flex-shrink: 0;
   margin-right: 20px;
   position: relative;
   z-index: 1;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lycee-item:hover .timeline-dot {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
 }
 
 /* Contenu du lycée */
 .lycee-content {
   flex-grow: 1;
+  transition: transform 0.3s ease;
+}
+
+.lycee-item:hover .lycee-content {
+  transform: translateX(5px);
 }
 
 /* Ajouter une marge supérieure aux sections pour espacement */
 .profil-section>h1 {
-  margin-top: 40px;
+  margin-top: 60px;
+}
+
+/* Animation de transition pour tous les éléments interactifs */
+.item,
+.competence-item,
+.certification-item,
+.lycee-item,
+.timeline-dot,
+.lycee-content {
+  transition: all 0.3s ease;
+}
+
+/* Message de chargement */
+p[v-else] {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ccc;
+  padding: 40px 0;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin-top: 20px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .profil-section h1 {
+    font-size: 2rem;
+  }
 
   .centres-interet .item,
   .qualites .item,
@@ -432,7 +508,10 @@ a:hover {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
+  .profil-section h1 {
+    font-size: 1.8rem;
+  }
 
   .centres-interet .item,
   .qualites .item,
