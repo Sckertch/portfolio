@@ -17,6 +17,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    // Toujours défiler vers le haut à chaque changement de route
+    return { top: 0, behavior: 'smooth' }
+  }
 });
 
 export default router;

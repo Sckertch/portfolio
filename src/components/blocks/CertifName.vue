@@ -20,34 +20,38 @@ onMounted(() => {
 
 <style scoped>
 .certification-item {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
   padding: 20px;
-  width: 40%;
+  width: 50%;
   text-align: center;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .certification-item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .certification-item img {
   width: 100%;
-  max-width: 200px;
+  max-width: 1000px;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .certification-item h2 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #ffd700;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .certification-item p {
-  font-size: 1.2rem;
-  color: #fff;
+  font-size: 1rem;
+  color: #333;
 }
 </style>

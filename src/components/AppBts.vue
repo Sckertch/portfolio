@@ -183,95 +183,102 @@
 <style scoped>
 .bts-container {
     font-family: 'Roboto', sans-serif;
-    color: #fff;
+    color: #333;
     max-width: 1200px;
     margin: 0 auto;
     padding: 60px 20px;
-    background-color: #121212;
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Fond plus transparent */
 }
 
-/* En-tête avec style section-title comme dans les autres composants */
+/* Ajustements pour les sections spécifiques */
 .bts-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.bts-header h1 {
-    font-size: 2.5rem;
-    color: #ffd700;
-    margin-bottom: 30px;
-    position: relative;
-    padding-bottom: 15px;
-}
-
-.bts-header h1::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background-color: #ffd700;
-}
-
-.bts-intro {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30px;
-}
-
-.bts-logo {
-    max-width: 200px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;
-}
-
-.bts-logo:hover {
-    transform: scale(1.05);
-}
-
-.tagline {
-    font-size: 1.2rem;
-    font-style: italic;
-    color: #ccc;
-}
-
-/* Sections avec style similaire à PartStage et PartProjet */
-section {
-    margin-bottom: 60px;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(255, 255, 255, 0.4);
     border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bts-overview,
+.bts-options,
+.bts-competences,
+.bts-debouches,
+.bts-personal {
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuster les cartes pour qu'elles se fondent mieux aussi */
+.option-card,
+.competence-item,
+.debouche-card {
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.option-card:hover,
+.competence-item:hover,
+.debouche-card:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Sections avec style similaire à PartStage et PartProjet - modifier ce bloc existant */
+section {
+    margin-bottom: 60px;
+    background-color: rgba(255, 255, 255, 0.4);
+    /* Plus transparent */
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    /* Ombre plus légère */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 section:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    /* Ombre plus légère au survol */
 }
 
+/* Style de bannière noire pour les h2 */
 h2 {
     font-size: 2rem;
-    color: #ffd700;
+    color: #fff;
+    /* Texte blanc au lieu de #333 */
     margin-bottom: 25px;
-    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-    padding-bottom: 15px;
+    padding: 12px 20px;
+    /* Padding pour créer l'effet de bannière */
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Fond noir avec légère transparence */
+    border-radius: 8px;
+    /* Coins arrondis */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Ombre pour effet de profondeur */
+    border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+    /* Bordure dorée plus visible */
+    text-transform: uppercase;
+    /* Option : mettre en majuscules pour plus d'impact */
+    letter-spacing: 1px;
+    /* Espacement des lettres pour meilleure lisibilité */
+}
+
+/* Optionnel : ajouter un effet au survol pour les bannières h2 */
+section:hover h2 {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
 h3 {
     font-size: 1.5rem;
-    color: #ffd700;
+    color: #333;
+    /* Au lieu de #ffd700 */
     margin-bottom: 15px;
 }
 
 h4 {
     font-size: 1.3rem;
-    color: #ffd700;
+    color: #333;
+    /* Au lieu de #ffd700 */
     margin-bottom: 15px;
 }
 
@@ -280,7 +287,8 @@ p {
     line-height: 1.6;
     margin-bottom: 15px;
     text-align: justify;
-    color: #e0e0e0;
+    color: #333;
+    /* Au lieu de #e0e0e0 */
 }
 
 ul {
@@ -292,12 +300,14 @@ li {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 8px;
-    color: #e0e0e0;
+    color: #333;
+    /* Au lieu de #e0e0e0 */
 }
 
 /* Cards avec style similaire au projet/stage */
 .option-card {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.7);
+    /* Fond blanc plus léger */
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
@@ -317,7 +327,8 @@ li {
 
 .option-subtitle {
     font-size: 1.1rem;
-    color: #ccc;
+    color: #666;
+    /* Au lieu de #ccc */
     font-style: italic;
 }
 
@@ -331,7 +342,8 @@ li {
 
 .competence-item,
 .debouche-card {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.7);
+    /* Fond blanc plus léger */
     border-radius: 10px;
     padding: 20px;
     width: calc(33% - 20px);

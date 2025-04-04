@@ -3,10 +3,40 @@ import { ref, onMounted } from 'vue';
 import CompName from './blocks/CompName.vue';
 import CertifName from './blocks/CertifName.vue';
 import LyceeName from './blocks/LyceeName.vue';
+import ExpeName from './blocks/ExpeName.vue';
+
+//dans la partie centres d'intérets, je vousdrais que l'item nature sois un carrousel d'image en fonction d'iun nombre d'image qu'il récupèrera en bdd
+
+//dans la partie centres d'intérets, je vousdrais que l'item sois un carrousel d'image en fonction d'iun nombre d'image qu'il récupèrera en bdd
+
+// Variable pour le carrousel d'images de nature
+const nombreImagesNature = ref(5); // Nombre d'images à afficher dans le carrousel
+const currentImageNature = ref(0); // Index de l'image actuellement affichée
+
+// Fonction pour passer à l'image suivante
+const nextImageNature = () => {
+  currentImageNature.value = (currentImageNature.value + 1) % nombreImagesNature.value;
+};
+
+// Fonction pour passer à l'image précédente
+const prevImageNature = () => {
+  currentImageNature.value = (currentImageNature.value - 1 + nombreImagesNature.value) % nombreImagesNature.value;
+};
+
+// Fonction pour afficher une image spécifique
+const showImageNature = (index) => {
+  currentImageNature.value = index;
+};
+
+// Fonction pour générer l'URL de l'image de nature
+const getNatureImageUrl = (index) => {
+  return `https://portoimages.duckdns.org/${index + 1}.jpeg`;
+};
 
 const competences = ref([]);
 const certifications = ref([]);
 const lycees = ref([]);
+const experiences = ref([]);
 
 const getCompetences = () => {
   fetch('https://axilio.duckdns.org/competence/getcompetence')
@@ -38,10 +68,38 @@ const getLycees = () => {
     .catch(error => console.error(error));
 };
 
+const getExperiences = () => {
+  fetch('https://axilio.duckdns.org/Profesionel/getexperience')
+    .then(response => response.json())
+    .then(data => {
+      experiences.value = data.content;
+      console.log("experiences du fetch", experiences.value);
+    })
+    .catch(error => console.error(error));
+};
+
+const downloadCV = () => {
+  // Accès direct au PDF dans le dossier des images (pas besoin de passer par l'API)
+  const cvUrl = 'https://portoimages.duckdns.org/cv.pdf';
+
+  // Crée un lien temporaire pour télécharger le fichier
+  const link = document.createElement('a');
+  link.href = cvUrl;
+  link.target = '_blank'; // Ouvre dans un nouvel onglet
+  link.download = 'CV_LEDA_Mathis.pdf'; // Nom du fichier téléchargé
+
+  // Déclenche le téléchargement
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 onMounted(() => {
   getCompetences();
   getCertifications();
   getLycees();
+  getExperiences();
+  console.log("experiences", experiences.value);
   console.log("competences", competences.value);
   console.log("certifications", certifications.value);
   console.log("lycees", lycees.value);
@@ -59,17 +117,27 @@ onMounted(() => {
         Depuis que je suis petit, j’ai toujours été attiré par l’informatique et les nouvelles technologies. De ce fait,
         je me suis tourné vers ces études.
       </p>
-      <a href="#" class="btn-cv">Télécharger mon CV</a>
+      <a href="#" class="btn-cv" @click.prevent="downloadCV">Télécharger mon CV</a>
 
       <!-- Centres d'intérêt -->
       <h1>Mes centres d'intérêt</h1>
       <div class="centres-interet">
-        <div class="item">
-          <h2>La mer</h2>
-          <video autoplay muted loop>
-            <source src="../assets/img/img/vague.mp4" type="video/mp4">
-          </video>
+        <!-- Carrousel pour La nature -->
+        <div class="item carousel">
+          <h2>La nature</h2>
+          <div class="carousel-container">
+            <button class="carousel-btn prev" @click="prevImageNature">&lt;</button>
+            <div class="carousel-content">
+              <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature">
+              <div class="carousel-indicators">
+                <span v-for="index in nombreImagesNature" :key="index - 1"
+                  :class="{ active: index - 1 === currentImageNature }" @click="showImageNature(index - 1)"></span>
+              </div>
+            </div>
+            <button class="carousel-btn next" @click="nextImageNature">&gt;</button>
+          </div>
         </div>
+
         <div class="item">
           <h2>Taekwondo</h2>
           <img src="../assets/img/img/tkd.jpeg" alt="Taekwondo">
@@ -108,17 +176,38 @@ onMounted(() => {
       </div>
       <p v-else>Chargement des compétences...</p>
 
-      <!-- Mes Formations -->
-      <h1>Mes formations</h1>
-      <div class="lycees" v-if="lycees.length">
-        <div v-for="(lycee, index) in lycees" :key="lycee.nom" class="lycee-item">
-          <div class="timeline-dot"></div>
-          <div class="lycee-content">
-            <LyceeName :lycee="lycee" />
+
+      <!-- Section Mon Parcours -->
+      <h1>Mon parcours</h1>
+      <div class="parcours-container">
+        <!-- Formations -->
+        <div class="parcours-section">
+          <h2 class="parcours-subtitle">Mes formations</h2>
+          <div class="lycees" v-if="lycees.length">
+            <div v-for="(lycee, index) in lycees" :key="lycee.nom" class="lycee-item">
+              <div class="timeline-dot"></div>
+              <div class="lycee-content">
+                <LyceeName :lycee="lycee" />
+              </div>
+            </div>
           </div>
+          <p v-else>Chargement des formations...</p>
+        </div>
+
+        <!-- Expériences professionnelles -->
+        <div class="parcours-section">
+          <h2 class="parcours-subtitle">Mes expériences professionnelles</h2>
+          <div class="experiences" v-if="experiences.length">
+            <div v-for="(experience, index) in experiences" :key="experience.nom" class="experience-item">
+              <div class="timeline-dot"></div>
+              <div class="experience-content">
+                <ExpeName :experience="experience" />
+              </div>
+            </div>
+          </div>
+          <p v-else>Chargement des expériences...</p>
         </div>
       </div>
-      <p v-else>Chargement des lycées...</p>
 
       <!-- Mes certifications -->
       <h1>Mes certifications</h1>
@@ -134,10 +223,9 @@ onMounted(() => {
 /* Styles globaux */
 .test {
   font-family: 'Roboto', sans-serif;
-  background-color: #000000;
-  /* Fond noir */
-  background-size: 400% 400%;
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
+  /* Fond plus transparent */
+  color: #333;
   margin: 0;
   padding: 0;
 }
@@ -150,7 +238,7 @@ h4 {
 }
 
 a {
-  color: #fff;
+  color: #333;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -164,30 +252,34 @@ a:hover {
   padding: 60px 20px;
   margin: 0 auto;
   max-width: 1200px;
-  background-color: #121212;
-  /* Couleur de fond secondaire si nécessaire */
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 15px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Style de bannière noire pour les h1 */
 .profil-section h1 {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 25px;
+  padding: 12px 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
   text-align: center;
-  color: #ffd700;
   position: relative;
-  padding-bottom: 15px;
 }
 
 .profil-section h1::after {
-  content: '';
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background-color: #ffd700;
+  display: none;
+}
+
+section:hover h1 {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 .profil-section p {
@@ -195,7 +287,7 @@ a:hover {
   line-height: 1.6;
   text-align: justify;
   margin-bottom: 30px;
-  color: #e0e0e0;
+  color: #333;
 }
 
 /* Bouton de téléchargement du CV */
@@ -203,7 +295,7 @@ a:hover {
   display: inline-block;
   padding: 12px 24px;
   background-color: rgba(255, 215, 0, 0.1);
-  color: #ffd700;
+  color: #333;
   border: 2px solid #ffd700;
   border-radius: 8px;
   font-weight: bold;
@@ -212,12 +304,6 @@ a:hover {
   transition: all 0.3s ease;
   margin-bottom: 40px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-cv:hover {
-  background-color: rgba(255, 215, 0, 0.2);
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Section Centres d'intérêt */
@@ -230,18 +316,18 @@ a:hover {
 }
 
 .centres-interet .item {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: 15px;
   padding: 20px;
   width: 30%;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .centres-interet .item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -257,9 +343,8 @@ a:hover {
 .centres-interet .item h2 {
   font-size: 1.3rem;
   margin-bottom: 10px;
-  color: #ffd700;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  padding-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 /* Section Qualités */
@@ -272,18 +357,18 @@ a:hover {
 }
 
 .qualites .item {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: 15px;
   padding: 20px;
   width: 22%;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .qualites .item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -298,15 +383,14 @@ a:hover {
 .qualites .item h2 {
   font-size: 1.3rem;
   margin-bottom: 10px;
-  color: #ffd700;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  padding-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .qualites .item h4 {
   font-size: 1rem;
   line-height: 1.4;
-  color: #e0e0e0;
+  color: #333;
 }
 
 /* Section Compétences */
@@ -319,18 +403,18 @@ a:hover {
 }
 
 .competence-item {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: 15px;
   padding: 20px;
   width: 30%;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .competence-item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -345,9 +429,8 @@ a:hover {
 .competence-item h2 {
   font-size: 1.3rem;
   margin-bottom: 10px;
-  color: #ffd700;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  padding-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .progress-bar {
@@ -375,18 +458,18 @@ a:hover {
 }
 
 .certification-item {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: 15px;
   padding: 20px;
-  width: 30%;
+  width: 75%;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .certification-item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -401,25 +484,22 @@ a:hover {
 .certification-item h2 {
   font-size: 1.3rem;
   margin-bottom: 10px;
-  color: #ffd700;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  padding-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .certification-item p {
   font-size: 1rem;
-  color: #e0e0e0;
+  color: #333;
 }
 
 /* Section Lycées */
-/* Conteneur principal des lycées */
 .lycees {
   position: relative;
   padding-left: 20px;
   margin-top: 40px;
 }
 
-/* Ligne verticale de la timeline */
 .lycees::before {
   content: '';
   position: absolute;
@@ -427,11 +507,10 @@ a:hover {
   top: 0;
   bottom: 0;
   width: 2px;
-  background-color: #ffd700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  background-color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Conteneur de chaque lycée */
 .lycee-item {
   display: flex;
   align-items: center;
@@ -439,26 +518,24 @@ a:hover {
   position: relative;
 }
 
-/* Point de décoration */
 .timeline-dot {
   width: 20px;
   height: 20px;
-  background-color: #ffd700;
+  background-color: #333;
   border-radius: 50%;
   flex-shrink: 0;
   margin-right: 20px;
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .lycee-item:hover .timeline-dot {
   transform: scale(1.2);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Contenu du lycée */
 .lycee-content {
   flex-grow: 1;
   transition: transform 0.3s ease;
@@ -468,12 +545,10 @@ a:hover {
   transform: translateX(5px);
 }
 
-/* Ajouter une marge supérieure aux sections pour espacement */
 .profil-section>h1 {
   margin-top: 60px;
 }
 
-/* Animation de transition pour tous les éléments interactifs */
 .item,
 .competence-item,
 .certification-item,
@@ -483,15 +558,81 @@ a:hover {
   transition: all 0.3s ease;
 }
 
-/* Message de chargement */
 p[v-else] {
   text-align: center;
   font-size: 1.2rem;
-  color: #ccc;
+  color: #333;
   padding: 40px 0;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   margin-top: 20px;
+}
+
+/* Section Parcours */
+.parcours-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.parcours-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.parcours-subtitle {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Adapter la section experiences comme lycees */
+.experiences {
+  position: relative;
+  padding-left: 20px;
+}
+
+.experiences::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.experience-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.experience-item:hover .timeline-dot {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.experience-content {
+  flex-grow: 1;
+  transition: transform 0.3s ease;
+}
+
+.experience-item:hover .experience-content {
+  transform: translateX(5px);
+}
+
+/* Responsive Design pour le parcours */
+@media (max-width: 768px) {
+  .parcours-container {
+    flex-direction: column;
+  }
 }
 
 /* Responsive Design */
@@ -519,5 +660,76 @@ p[v-else] {
   .certification-item {
     width: 100%;
   }
+}
+
+/* Styles spécifiques pour le carrousel */
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.carousel-content {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.carousel-indicators span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-indicators span.active {
+  background-color: #ffd700;
+}
+
+.item.carousel img {
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 </style>

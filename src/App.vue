@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <NavBar/>
-    <router-view />
+    <NavBar />
+    <Transition name="page" mode="out-in">
+      <router-view />
+    </Transition>
+    <FlouterDown />
   </div>
 </template>
 
@@ -10,7 +13,7 @@ import NavBar from './components/NavBar.vue';
 import { onMounted } from 'vue';
 import { useCompetenceStore } from '../store/competence';
 import { storeToRefs } from 'pinia';
-
+import FlouterDown from './components/FlouterDown.vue';
 </script>
 
 <style>
@@ -25,12 +28,37 @@ import { storeToRefs } from 'pinia';
   color: #fff;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
 
 @keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
+/* Transitions pour le RouterView */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Assurez-vous que le contenu principal prend l'espace nécessaire */
+.router-view {
+  flex: 1;
+}
 </style>

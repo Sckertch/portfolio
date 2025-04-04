@@ -24,18 +24,20 @@ onMounted(() => {
 
 <style scoped>
 .lycee-item {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
   padding: 20px;
   width: 100%;
   text-align: left;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
   margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .lycee-item:hover {
   transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .lycee-header {
@@ -45,20 +47,19 @@ onMounted(() => {
 .lycee-name {
   font-size: 1.5rem;
   margin-bottom: 5px;
-  color: #ffd700;
+  color: #333;
 }
 
 .lycee-date {
   font-size: 1rem;
-  color: #ccc;
+  color: #333;
   margin-bottom: 10px;
 }
 
 .lycee-description {
   font-size: 1rem;
-  color: #fff;
+  color: #333;
   line-height: 1.6;
   margin-top: 10px;
-  /* Ajouter une marge supérieure pour l'espacement */
 }
 </style>

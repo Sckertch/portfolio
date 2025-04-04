@@ -91,8 +91,9 @@ const showPopup = ref(false);
 <style scoped>
 .stage-section {
     padding: 60px 0;
-    background-color: #121212;
-    color: #fff;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .stage-container {
@@ -103,21 +104,21 @@ const showPopup = ref(false);
 
 .section-title {
     font-size: 2.5rem;
-    color: #ffd700;
+    color: #fff;
     text-align: center;
     margin-bottom: 50px;
+    padding: 12px 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
     position: relative;
 }
 
 .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background-color: #ffd700;
+    display: none;
 }
 
 .stage-card {
@@ -185,7 +186,7 @@ const showPopup = ref(false);
 
 .tasks-container {
     margin-top: 20px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.296);
     border-radius: 10px;
     padding: 20px;
 }
@@ -242,7 +243,7 @@ const showPopup = ref(false);
 .skill-tag {
     display: inline-block;
     padding: 8px 15px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.189);
     color: #fff;
     border-radius: 20px;
     font-size: 0.9rem;

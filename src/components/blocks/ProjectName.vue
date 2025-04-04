@@ -49,17 +49,6 @@
                     Voir sur GitHub
                 </a>
             </div>
-
-            <!-- Anciennes sections maintenues pour compatibilité --
-            <div class="tech-badges" v-if="projet.technologies">
-                <span class="tech-badge" v-for="tech in projet.technologies" :key="tech">{{ tech }}</span>
-            </div>
-            <div class="project-gallery" v-if="projet.gallery">
-                <div class="gallery-item" v-for="(image, index) in projet.gallery" :key="index">
-                    <img :src="image.src" :alt="image.alt || 'Image du projet'" class="img-fluid">
-                    <p class="image-caption" v-if="image.caption">{{ image.caption }}</p>
-                </div>
-            </div>-->
         </div>
     </div>
 </template>
@@ -85,7 +74,7 @@ const parseLanguages = (languagesString) => {
 
 <style scoped>
 .project-card {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.308);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
