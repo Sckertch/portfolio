@@ -10,7 +10,7 @@ import ExpeName from './blocks/ExpeName.vue';
 //dans la partie centres d'intérets, je vousdrais que l'item sois un carrousel d'image en fonction d'iun nombre d'image qu'il récupèrera en bdd
 
 // Variable pour le carrousel d'images de nature
-const nombreImagesNature = ref(5); // Nombre d'images à afficher dans le carrousel
+const nombreImagesNature = ref(3); // Nombre d'images à afficher dans le carrousel
 const currentImageNature = ref(0); // Index de l'image actuellement affichée
 
 // Fonction pour passer à l'image suivante
@@ -31,6 +31,16 @@ const showImageNature = (index) => {
 // Fonction pour générer l'URL de l'image de nature
 const getNatureImageUrl = (index) => {
   return `https://portoimages.duckdns.org/${index + 1}.jpeg`;
+};
+
+// Intervalle pour le défilement automatique (en millisecondes)
+const autoScrollInterval = 3000; // 3 secondes
+
+// Fonction pour démarrer le défilement automatique
+const startAutoScroll = () => {
+  setInterval(() => {
+    nextImageNature();
+  }, autoScrollInterval);
 };
 
 const competences = ref([]);
@@ -94,6 +104,40 @@ const downloadCV = () => {
   document.body.removeChild(link);
 };
 
+// Variable pour gérer l'état de zoom
+const isZoomed = ref(false);
+const zoomTimeout = ref(null);
+
+// Fonction pour démarrer le zoom
+const startZoom = () => {
+  zoomTimeout.value = setTimeout(() => {
+    isZoomed.value = true;
+  }, 1000); // 1 seconde
+};
+
+// Fonction pour arrêter le zoom
+const stopZoom = () => {
+  clearTimeout(zoomTimeout.value);
+  isZoomed.value = false;
+};
+
+const showModal = ref(false);
+let pressTimer = null;
+
+const startLongPress = () => {
+  pressTimer = setTimeout(() => {
+    showModal.value = true;
+  }, 1000); // 1 seconde
+};
+
+const cancelLongPress = () => {
+  clearTimeout(pressTimer);
+};
+
+const closeModal = () => {
+  showModal.value = false;
+};
+
 onMounted(() => {
   getCompetences();
   getCertifications();
@@ -103,6 +147,7 @@ onMounted(() => {
   console.log("competences", competences.value);
   console.log("certifications", certifications.value);
   console.log("lycees", lycees.value);
+  startAutoScroll();
 });
 </script>
 
@@ -126,15 +171,17 @@ onMounted(() => {
         <div class="item carousel">
           <h2>La nature</h2>
           <div class="carousel-container">
-            <button class="carousel-btn prev" @click="prevImageNature">&lt;</button>
             <div class="carousel-content">
-              <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature">
-              <div class="carousel-indicators">
-                <span v-for="index in nombreImagesNature" :key="index - 1"
-                  :class="{ active: index - 1 === currentImageNature }" @click="showImageNature(index - 1)"></span>
-              </div>
+              <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature" @mousedown="startLongPress"
+                @mouseup="cancelLongPress" @mouseleave="cancelLongPress">
             </div>
-            <button class="carousel-btn next" @click="nextImageNature">&gt;</button>
+          </div>
+        </div>
+
+        <!-- Modal pour les images de la nature -->
+        <div v-if="showModal" class="modal-overlay" @click="closeModal">
+          <div class="modal-content">
+            <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature en grand">
           </div>
         </div>
 
@@ -682,45 +729,11 @@ p[v-else] {
 }
 
 .carousel-btn {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 10px;
-  transition: background-color 0.3s ease;
-  z-index: 10;
-}
-
-.carousel-btn:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
 }
 
 .carousel-indicators {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-  width: 100%;
-}
-
-.carousel-indicators span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.3);
-  margin: 0 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.carousel-indicators span.active {
-  background-color: #ffd700;
+  display: none;
 }
 
 .item.carousel img {
@@ -731,5 +744,43 @@ p[v-else] {
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+}
+
+/* Style pour l'image zoomée */
+img.zoomed {
+  transform: scale(2);
+  /* Zoom x2 */
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  margin: auto;
+  /* Assure un centrage vertical et horizontal */
 }
 </style>
