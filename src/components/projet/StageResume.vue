@@ -5,6 +5,16 @@
             <div class="project-title-container">
                 <h2 class="project-title">Zayann</h2>
                 <p class="project-subtitle">Développement d'une solution e-commerce pour un primeur local</p>
+                <a href="https://www.zayann.boutique/" target="_blank" rel="noopener noreferrer"
+                    class="project-site-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    Visiter www.zayann.boutique
+                </a>
             </div>
             <div class="project-logo">
                 <img src="../../assets/img/stage1/zayann.png" alt="Logo Zayann" class="img-fluid">
@@ -405,28 +415,131 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal global pour les images zoomées -->
+        <div v-if="modalOpen" class="global-modal" @click="closeGlobalModal">
+            <div class="global-modal-content" @click.stop>
+                <img :src="currentModalImage" alt="Image agrandie" class="global-modal-image">
+                <button class="global-modal-close" @click="closeGlobalModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
-// Pas de logique supplémentaire nécessaire
+import { onMounted, ref } from 'vue';
+
+// Variables pour le modal d'image
+const modalOpen = ref(false);
+const currentModalImage = ref('');
+
+// Fonction pour ouvrir le modal avec une image
+const openGlobalModal = (imageUrl) => {
+    currentModalImage.value = imageUrl;
+    modalOpen.value = true;
+    // Désactiver le défilement du body
+    document.body.style.overflow = 'hidden';
+};
+
+// Fonction pour fermer le modal
+const closeGlobalModal = () => {
+    modalOpen.value = false;
+    // Réactiver le défilement du body
+    document.body.style.overflow = '';
+};
+
+// Amélioration du chargement de Bootstrap
+onMounted(() => {
+    // Vérifier si une balise script pour Bootstrap existe déjà
+    const existingScript = document.querySelector('script[src*="bootstrap.bundle.min.js"]');
+
+    if (!existingScript) {
+        // Créer et ajouter le script Bootstrap
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
+        script.integrity = 'sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz';
+        script.crossOrigin = 'anonymous';
+        document.head.appendChild(script);
+
+        // Initialiser l'accordéon une fois le script chargé
+        script.onload = () => {
+            setTimeout(() => {
+                // Ouvrir le premier panneau par défaut si Bootstrap est chargé
+                if (window.bootstrap) {
+                    const firstCollapse = document.getElementById('collapseFirstYear');
+                    if (firstCollapse) {
+                        new bootstrap.Collapse(firstCollapse, { toggle: true });
+                    }
+                }
+            }, 300);
+        };
+    }
+
+    // Ajouter des écouteurs de clic sur toutes les images de la galerie
+    const galleryImages = document.querySelectorAll('.gallery-item img');
+    galleryImages.forEach(img => {
+        img.addEventListener('click', () => {
+            openGlobalModal(img.src);
+        });
+        // Ajouter un style de curseur pour indiquer que l'image est cliquable
+        img.style.cursor = 'pointer';
+
+        // Créer et ajouter l'overlay et l'icône de zoom à chaque image
+        const galleryItem = img.closest('.gallery-item');
+        if (galleryItem) {
+            // Vérifier si l'overlay existe déjà
+            if (!galleryItem.querySelector('.image-overlay')) {
+                // Créer l'overlay
+                const overlay = document.createElement('div');
+                overlay.className = 'image-overlay';
+
+                // Créer l'icône de zoom
+                const zoomIcon = document.createElement('span');
+                zoomIcon.className = 'zoom-icon';
+                zoomIcon.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                `;
+
+                // Ajouter l'icône à l'overlay et l'overlay à l'élément parent
+                overlay.appendChild(zoomIcon);
+                galleryItem.style.position = 'relative';
+                galleryItem.appendChild(overlay);
+            }
+        }
+    });
+});
 </script>
 
 <style scoped>
 .stage-resume {
     color: #f0f0f0;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 2rem;
+    background-color: rgba(26, 42, 108, 0.2);
 }
 
 /* En-tête du projet */
 .project-header {
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
-    background-color: rgba(255, 255, 255, 0.05);
+    margin-bottom: 1.5rem;
+    background-color: rgba(26, 42, 108, 0.5);
     border-radius: 10px;
-    padding: 20px;
+    padding: 1.25rem;
 }
 
 .project-title-container {
@@ -434,59 +547,59 @@
 }
 
 .project-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
     color: #ffd700;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
 }
 
 .project-subtitle {
-    font-size: 1.1rem;
-    color: #ccc;
+    font-size: 1rem;
+    color: #e0e0e0;
 }
 
 .project-logo {
     flex: 1;
     display: flex;
     justify-content: center;
-    margin-left: 20px;
+    margin-left: 1.25rem;
 }
 
 .project-logo img {
-    max-width: 150px;
-    border-radius: 10px;
+    max-width: 120px;
+    border-radius: 8px;
 }
 
 .project-description {
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
     line-height: 1.6;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
-    padding: 20px;
+    padding: 1.25rem;
 }
 
 /* Style de l'accordéon */
 .accordion {
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
 }
 
 .accordion-item {
     background-color: rgba(255, 255, 255, 0.05);
     border: none;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
     border-radius: 10px;
     overflow: hidden;
 }
 
 .accordion-button {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(26, 42, 108, 0.8);
     color: #fff;
-    font-size: 1.2rem;
-    padding: 16px 20px;
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
     font-weight: 500;
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: rgba(255, 215, 0, 0.1);
+    background-color: rgba(255, 215, 0, 0.15);
     color: #ffd700;
 }
 
@@ -495,51 +608,27 @@
     border-color: rgba(255, 215, 0, 0.2);
 }
 
-.accordion-button::after {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
-
-.accordion-button:not(.collapsed)::after {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffd700'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
-
-.year-badge {
-    display: inline-block;
-    background-color: #ffd700;
-    color: #000;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 25px;
-    margin-right: 10px;
-    font-weight: bold;
-}
-
 .accordion-body {
     background-color: rgba(0, 0, 0, 0.2);
-    padding: 25px;
-    color: #e0e0e0;
+    padding: 1.5rem;
 }
 
 /* Sections de contenu */
 .stage-section {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border-radius: 15%;
-    background-color: rgba(255, 255, 255, 0.02);
-    padding: 20px;
+    margin-bottom: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1.25rem;
+    border-radius: 8px;
     border: 1px solid rgba(255, 215, 0, 0.1);
-    border-radius: 15%;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .section-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #ffd700;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
     border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-    padding-bottom: 10px;
+    padding-bottom: 0.5rem;
 }
 
 .problems-list {
@@ -548,7 +637,7 @@
 }
 
 .problems-list li {
-    margin-bottom: 10px;
+    margin-bottom: 0.75rem;
     padding-left: 25px;
     position: relative;
     color: #e0e0e0;
@@ -558,7 +647,7 @@
     content: "!";
     position: absolute;
     left: 0;
-    top: 0;
+    top: 2px;
     width: 18px;
     height: 18px;
     background-color: rgba(255, 0, 0, 0.2);
@@ -573,20 +662,20 @@
 
 /* Tâches et galeries d'images */
 .task-group {
-    margin-bottom: 25px;
-    background-color: rgba(255, 255, 255, 0.03);
+    margin-bottom: 1.25rem;
+    background-color: rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    padding: 20px;
+    padding: 1.25rem;
 }
 
 .task-title {
-    font-size: 1.2rem;
-    color: #e0e0e0;
-    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #ffd700;
+    margin-bottom: 1rem;
 }
 
 .task-description {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
     color: #d0d0d0;
     font-style: italic;
 }
@@ -594,8 +683,8 @@
 .image-gallery {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 15px;
+    gap: 0.75rem;
+    margin-top: 1rem;
 }
 
 .gallery-item {
@@ -604,11 +693,16 @@
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.2);
     position: relative;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
 }
 
 .gallery-item img {
     width: 100%;
-    border-radius: 6px;
+    border-radius: 4px;
     transition: transform 0.3s ease;
 }
 
@@ -630,10 +724,10 @@
 }
 
 .image-caption {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #b0b0b0;
     text-align: center;
-    padding: 8px 5px;
+    padding: 0.5rem;
     margin: 0;
 }
 
@@ -641,7 +735,7 @@
 .tech-badges {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 0.5rem;
 }
 
 .tech-badge {
@@ -650,30 +744,198 @@
     color: #ffd700;
     border: 1px solid rgba(255, 215, 0, 0.3);
     border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
 }
 
-/* Assurer que tous les paragraphes sont lisibles */
+.tech-badge:hover {
+    background-color: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Styles généraux pour le texte */
 p {
     color: #e0e0e0;
+    margin-bottom: 0.75rem;
 }
 
-/* S'assurer que les éléments des listes sont bien visibles */
-li {
-    color: #e0e0e0;
+/* Scrollbar personnalisée */
+.stage-resume::-webkit-scrollbar {
+    width: 8px;
 }
 
-/* Responsive design */
+.stage-resume::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.stage-resume::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.2);
+    border-radius: 4px;
+}
+
+.stage-resume::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.3);
+}
+
+/* Modal global pour les images agrandies */
+.global-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.global-modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: scaleIn 0.3s ease;
+}
+
+.global-modal-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.global-modal-close {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    background-color: #ffd700;
+    color: #14213d;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.global-modal-close:hover {
+    transform: rotate(90deg);
+    background-color: #ffe55c;
+}
+
+/* Overlay et icône de zoom pour les images */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.gallery-item:hover .image-overlay {
+    opacity: 1;
+}
+
+.zoom-icon {
+    color: #ffffff;
+    background-color: rgba(255, 215, 0, 0.7);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+    z-index: 3;
+}
+
+.gallery-item:hover .zoom-icon {
+    transform: scale(1);
+}
+
+/* Style pour le lien vers le site du projet */
+.project-site-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.project-site-link:hover {
+    background-color: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.project-site-link svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Animations pour le modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+/* Media queries */
 @media (max-width: 768px) {
     .project-header {
         flex-direction: column;
+        align-items: center;
         text-align: center;
     }
 
     .project-logo {
         margin-left: 0;
-        margin-top: 20px;
+        margin-top: 1rem;
+    }
+
+    .stage-resume {
+        padding: 1rem;
     }
 
     .gallery-item,

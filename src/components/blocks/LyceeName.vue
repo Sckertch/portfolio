@@ -1,65 +1,97 @@
 <template>
-  <div class="lycee-item">
-    <div class="lycee-header">
-      <h2 class="lycee-name">{{ lycee.nom }}</h2>
-      <p class="lycee-date">{{ lycee.date }}</p>
+  <div class="education-card">
+    <div class="education-header">
+      <h3 class="education-name">{{ lycee.nom }}</h3>
+      <span class="education-date">{{ lycee.date }}</span>
     </div>
-    <div class="lycee-description">
-      <p>{{ lycee.description }}</p>
+    <div class="education-body">
+      <p class="education-description">{{ lycee.description }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, onMounted } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps({
   lycee: Object
 });
-
-onMounted(() => {
-  console.log("lycee", props.lycee);
-});
 </script>
 
 <style scoped>
-.lycee-item {
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
-  padding: 20px;
-  width: 100%;
-  text-align: left;
-  transition: all 0.3s ease;
-  margin-bottom: 20px;
+.education-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1.25rem;
+}
+
+.education-card:hover {
+  transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.lycee-item:hover {
-  transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+.education-header {
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.lycee-header {
-  margin-bottom: 15px;
+.education-name {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #ffffff;
+  position: relative;
+  padding-left: 0.75rem;
 }
 
-.lycee-name {
-  font-size: 1.5rem;
-  margin-bottom: 5px;
-  color: #333;
+.education-name::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 70%;
+  background-color: #ffd700;
+  border-radius: 2px;
 }
 
-.lycee-date {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 10px;
+.education-date {
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(255, 215, 0, 0.2);
+  border-radius: 50px;
+  font-size: 0.85rem;
+  color: #ffd700;
+  font-weight: 600;
 }
 
-.lycee-description {
-  font-size: 1rem;
-  color: #333;
-  line-height: 1.6;
-  margin-top: 10px;
+.education-body {
+  padding: 1rem;
+}
+
+.education-description {
+  color: #ffffff;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 576px) {
+  .education-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .education-date {
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
 }
 </style>

@@ -1,13 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick, onBeforeUnmount, watch } from 'vue';
 import CompName from './blocks/CompName.vue';
 import CertifName from './blocks/CertifName.vue';
 import LyceeName from './blocks/LyceeName.vue';
 import ExpeName from './blocks/ExpeName.vue';
-
-//dans la partie centres d'intérets, je vousdrais que l'item nature sois un carrousel d'image en fonction d'iun nombre d'image qu'il récupèrera en bdd
-
-//dans la partie centres d'intérets, je vousdrais que l'item sois un carrousel d'image en fonction d'iun nombre d'image qu'il récupèrera en bdd
 
 // Variable pour le carrousel d'images de nature
 const nombreImagesNature = ref(3); // Nombre d'images à afficher dans le carrousel
@@ -138,6 +134,106 @@ const closeModal = () => {
   showModal.value = false;
 };
 
+// Ajout du modal global pour les images
+const globalModal = ref(false);
+const currentModalImage = ref('');
+
+// Fonction pour ouvrir le modal global avec n'importe quelle image
+const openGlobalModal = (imageUrl) => {
+  currentModalImage.value = imageUrl;
+  globalModal.value = true;
+  // Désactiver le défilement quand le modal est ouvert
+  document.body.style.overflow = 'hidden';
+};
+
+// Fonction pour fermer le modal global
+const closeGlobalModal = () => {
+  globalModal.value = false;
+  // Réactiver le défilement
+  document.body.style.overflow = '';
+};
+
+// Pour l'animation des compétences au défilement
+const competenceRefs = ref([]);
+const competenceStates = ref([]);
+
+// Fonction pour initialiser les références des compétences
+const initCompetenceRefs = () => {
+  // Réinitialiser l'état si les compétences changent
+  if (competences.value.length > 0) {
+    competenceRefs.value = new Array(competences.value.length).fill(null);
+    competenceStates.value = new Array(competences.value.length).fill(false);
+  }
+};
+
+// Pour surveiller les changements dans les données des compétences
+watch(competences, () => {
+  initCompetenceRefs();
+}, { immediate: true });
+
+// Fonction pour définir la référence d'une compétence
+const setCompetenceRef = (el, index) => {
+  competenceRefs.value[index] = el;
+};
+
+// Fonction pour vérifier si une compétence est visible
+const isCompetenceVisible = (index) => {
+  return competenceStates.value[index];
+};
+
+// Configuration de l'Intersection Observer pour chaque compétence
+const setupScrollReveal = () => {
+  // S'assurer que les références existent avant de configurer l'observer
+  if (!competenceRefs.value.length || !competences.value.length) {
+    return;
+  }
+
+  const options = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -10% 0px'
+  };
+
+  // Créer un nouvel IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        try {
+          // Trouver l'index de l'élément dans le tableau des références
+          const index = competenceRefs.value.findIndex(ref => ref === entry.target);
+          if (index !== -1) {
+            // Déclencher l'animation avec un délai basé sur l'index
+            competenceStates.value[index] = true;
+
+            // Arrêter d'observer cet élément une fois qu'il a été révélé
+            observer.unobserve(entry.target);
+          }
+        } catch (error) {
+          console.error("Erreur lors du traitement de l'entrée:", error);
+        }
+      }
+    });
+  }, options);
+
+  // Observer chaque élément de compétence, avec vérification
+  nextTick(() => {
+    competenceRefs.value.forEach((ref, index) => {
+      if (ref && !competenceStates.value[index]) { // Vérifier que la référence existe et n'est pas déjà révélée
+        try {
+          observer.observe(ref);
+        } catch (error) {
+          console.error(`Erreur lors de l'observation de l'élément ${index}:`, error);
+        }
+      }
+    });
+  });
+
+  // Stocker l'observer pour pouvoir le nettoyer plus tard
+  return observer;
+};
+
+// Variable pour stocker l'observer
+let scrollObserver = null;
+
 onMounted(() => {
   getCompetences();
   getCertifications();
@@ -148,639 +244,1059 @@ onMounted(() => {
   console.log("certifications", certifications.value);
   console.log("lycees", lycees.value);
   startAutoScroll();
+
+  // Attendre que le composant soit rendu et que les données soient chargées
+  nextTick(() => {
+    // Initialiser les références si les compétences existent déjà
+    if (competences.value.length) {
+      initCompetenceRefs();
+
+      // Donner un peu de temps au DOM pour se mettre à jour
+      setTimeout(() => {
+        // Configurer et stocker l'observer
+        scrollObserver = setupScrollReveal();
+      }, 500);
+    }
+  });
 });
+
+// S'assurer que l'observer est détruit lorsque le composant est démonté
+onBeforeUnmount(() => {
+  if (scrollObserver) {
+    scrollObserver.disconnect();
+    scrollObserver = null;
+  }
+});
+
+// Mettre à jour l'observer lorsque les compétences changent
+watch(competences, () => {
+  // Nettoyer l'ancien observer
+  if (scrollObserver) {
+    scrollObserver.disconnect();
+  }
+
+  // Initialiser les nouvelles références
+  initCompetenceRefs();
+
+  // Attendre que le DOM se mette à jour
+  nextTick(() => {
+    setTimeout(() => {
+      // Créer un nouvel observer
+      scrollObserver = setupScrollReveal();
+    }, 500);
+  });
+}, { deep: true });
 </script>
 
 <template>
-  <div class="test">
-    <section class="profil-section">
-      <!-- À propos de moi -->
-      <h1>À propos de moi 📄</h1>
-      <p>
-        Je m’appelle LEDA Mathis, je suis âgé de 18 ans. Je suis actuellement étudiant au lycée de Baimbridge, en
-        première année de BTS Services Informatiques aux Organisations.
-        Depuis que je suis petit, j’ai toujours été attiré par l’informatique et les nouvelles technologies. De ce fait,
-        je me suis tourné vers ces études.
-      </p>
-      <a href="#" class="btn-cv" @click.prevent="downloadCV">Télécharger mon CV</a>
-
-      <!-- Centres d'intérêt -->
-      <h1>Mes centres d'intérêt</h1>
-      <div class="centres-interet">
-        <!-- Carrousel pour La nature -->
-        <div class="item carousel">
-          <h2>La nature</h2>
-          <div class="carousel-container">
-            <div class="carousel-content">
-              <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature" @mousedown="startLongPress"
-                @mouseup="cancelLongPress" @mouseleave="cancelLongPress">
-            </div>
+  <div class="profile-container">
+    <!-- Section À propos de moi -->
+    <section class="profile-section about-section">
+      <div class="section-header">
+        <h2 class="section-title">À propos de moi</h2>
+      </div>
+      <div class="section-content">
+        <div class="about-card">
+          <div class="about-info">
+            <p class="about-text">
+              Je m'appelle LEDA Mathis, je suis âgé de 18 ans. Je suis actuellement étudiant au lycée de Baimbridge, en
+              première année de BTS Services Informatiques aux Organisations.
+              Depuis que je suis petit, j'ai toujours été attiré par l'informatique et les nouvelles technologies. De ce
+              fait,
+              je me suis tourné vers ces études.
+            </p>
+            <a href="#" class="btn-primary" @click.prevent="downloadCV">
+              <span class="btn-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </span>
+              Télécharger mon CV
+            </a>
           </div>
         </div>
-
-        <!-- Modal pour les images de la nature -->
-        <div v-if="showModal" class="modal-overlay" @click="closeModal">
-          <div class="modal-content">
-            <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature en grand">
-          </div>
-        </div>
-
-        <div class="item">
-          <h2>Taekwondo</h2>
-          <img src="../assets/img/img/tkd.jpeg" alt="Taekwondo">
-        </div>
-        <div class="item">
-          <h2>La musique</h2>
-          <img src="../assets/img/img/note.png" alt="Musique">
-        </div>
       </div>
-
-      <!-- Mes qualités -->
-      <h1>Mes qualités</h1>
-      <div class="qualites">
-        <div class="item">
-          <h2>Esprit d'équipe</h2>
-          <img src="../assets/img/img/teamwork.jpg" alt="Esprit d'équipe">
-        </div>
-        <div class="item">
-          <h2>Adaptabilité</h2>
-          <img src="../assets/img/img/adaptabilité.jpg" alt="Adaptabilité">
-        </div>
-        <div class="item">
-          <h2>Prise d'initiative</h2>
-          <img src="../assets/img/img/init.jpg" alt="Prise d'initiative">
-        </div>
-        <div class="item">
-          <h2>Rigoureux</h2>
-          <img src="../assets/img/img/rigueur.jpg" alt="Rigueur">
-        </div>
-      </div>
-
-      <!-- Mes compétences -->
-      <h1>Mes compétences</h1>
-      <div class="competences" v-if="competences.length">
-        <CompName v-for="competence in competences" :key="competence.nom" :competence="competence" />
-      </div>
-      <p v-else>Chargement des compétences...</p>
-
-
-      <!-- Section Mon Parcours -->
-      <h1>Mon parcours</h1>
-      <div class="parcours-container">
-        <!-- Formations -->
-        <div class="parcours-section">
-          <h2 class="parcours-subtitle">Mes formations</h2>
-          <div class="lycees" v-if="lycees.length">
-            <div v-for="(lycee, index) in lycees" :key="lycee.nom" class="lycee-item">
-              <div class="timeline-dot"></div>
-              <div class="lycee-content">
-                <LyceeName :lycee="lycee" />
-              </div>
-            </div>
-          </div>
-          <p v-else>Chargement des formations...</p>
-        </div>
-
-        <!-- Expériences professionnelles -->
-        <div class="parcours-section">
-          <h2 class="parcours-subtitle">Mes expériences professionnelles</h2>
-          <div class="experiences" v-if="experiences.length">
-            <div v-for="(experience, index) in experiences" :key="experience.nom" class="experience-item">
-              <div class="timeline-dot"></div>
-              <div class="experience-content">
-                <ExpeName :experience="experience" />
-              </div>
-            </div>
-          </div>
-          <p v-else>Chargement des expériences...</p>
-        </div>
-      </div>
-
-      <!-- Mes certifications -->
-      <h1>Mes certifications</h1>
-      <div class="certifications" v-if="certifications.length">
-        <CertifName v-for="certification in certifications" :key="certification.nom" :certification="certification" />
-      </div>
-      <p v-else>Chargement des certifications...</p>
     </section>
+
+    <!-- Séparateur visuel -->
+    <div class="section-separator"></div>
+
+    <!-- Section Centres d'intérêt avec affichage amélioré des images -->
+    <section class="profile-section interests-section">
+      <div class="section-header">
+        <h2 class="section-title">Mes centres d'intérêt</h2>
+      </div>
+      <div class="section-content">
+        <div class="cards-grid">
+          <!-- Carrousel pour La nature avec meilleure gestion des images -->
+          <div class="interest-card">
+            <div class="card-header">
+              <h3 class="card-title">La nature</h3>
+            </div>
+            <div class="card-body">
+              <div class="carousel-container">
+                <div class="carousel-content">
+                  <div class="image-wrapper" @click="openGlobalModal(getNatureImageUrl(currentImageNature))">
+                    <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature" class="interest-image">
+                    <div class="image-overlay">
+                      <span class="zoom-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                          <line x1="11" y1="8" x2="11" y2="14"></line>
+                          <line x1="8" y1="11" x2="14" y2="11"></line>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="carousel-controls">
+                    <button class="carousel-button prev" @click="prevImageNature" aria-label="Image précédente">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                      </svg>
+                    </button>
+                    <div class="carousel-indicators">
+                      <span v-for="(_, index) in nombreImagesNature" :key="index" class="indicator"
+                        :class="{ active: index === currentImageNature }" @click="showImageNature(index)"></span>
+                    </div>
+                    <button class="carousel-button next" @click="nextImageNature" aria-label="Image suivante">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="interest-card">
+            <div class="card-header">
+              <h3 class="card-title">Taekwondo</h3>
+            </div>
+            <div class="card-body">
+              <div class="image-wrapper" @click="openGlobalModal('https://portoimages.duckdns.org/tkd.jpeg')">
+                <img src="../assets/img/img/tkd.jpeg" alt="Taekwondo" class="interest-image">
+                <div class="image-overlay">
+                  <span class="zoom-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="interest-card">
+            <div class="card-header">
+              <h3 class="card-title">La musique</h3>
+            </div>
+            <div class="card-body">
+              <div class="image-wrapper" @click="openGlobalModal('https://portoimages.duckdns.org/note.png')">
+                <img src="../assets/img/img/note.png" alt="Musique" class="interest-image">
+                <div class="image-overlay">
+                  <span class="zoom-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Séparateur visuel -->
+    <div class="section-separator"></div>
+
+    <!-- Section Qualités avec des icônes au lieu d'images -->
+    <section class="profile-section qualities-section">
+      <div class="section-header">
+        <h2 class="section-title">Mes qualités</h2>
+      </div>
+      <div class="section-content">
+        <div class="qualities-grid">
+          <div class="quality-card">
+            <div class="quality-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 class="quality-title">Esprit d'équipe</h3>
+          </div>
+
+          <div class="quality-card">
+            <div class="quality-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+            </div>
+            <h3 class="quality-title">Adaptabilité</h3>
+          </div>
+
+          <div class="quality-card">
+            <div class="quality-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <h3 class="quality-title">Prise d'initiative</h3>
+          </div>
+
+          <div class="quality-card">
+            <div class="quality-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20V10"></path>
+                <path d="M18 20V4"></path>
+                <path d="M6 20v-6"></path>
+              </svg>
+            </div>
+            <h3 class="quality-title">Rigueur</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Séparateur visuel -->
+    <div class="section-separator"></div>
+
+    <!-- Section Compétences avec animation scroll reveal -->
+    <section class="profile-section skills-section">
+      <div class="section-header">
+        <h2 class="section-title">Mes compétences</h2>
+      </div>
+      <div class="section-content">
+        <div class="skills-grid" v-if="competences.length">
+          <div v-for="(competence, index) in competences" :key="competence.nom" :ref="el => setCompetenceRef(el, index)"
+            class="skill-item" :class="{ 'revealed': isCompetenceVisible(index) }">
+            <CompName :competence="competence"
+              @image-click="openGlobalModal(`https://portoimages.duckdns.org/${competence.image}`)" />
+          </div>
+        </div>
+        <p v-else class="loading-message">Chargement des compétences...</p>
+      </div>
+    </section>
+
+    <!-- Séparateur visuel -->
+    <div class="section-separator"></div>
+
+    <!-- Section Parcours -->
+    <section class="profile-section path-section">
+      <div class="section-header">
+        <h2 class="section-title">Mon parcours</h2>
+      </div>
+      <div class="section-content">
+        <div class="path-container">
+          <!-- Formations -->
+          <div class="path-column">
+            <h3 class="column-title">Mes formations</h3>
+            <div class="timeline-wrapper" v-if="lycees.length">
+              <div v-for="(lycee, index) in lycees" :key="lycee.nom" class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <LyceeName :lycee="lycee" />
+                </div>
+              </div>
+            </div>
+            <p v-else class="loading-message">Chargement des formations...</p>
+          </div>
+
+          <!-- Expériences professionnelles -->
+          <div class="path-column">
+            <h3 class="column-title">Mes expériences professionnelles</h3>
+            <div class="timeline-wrapper" v-if="experiences.length">
+              <div v-for="(experience, index) in experiences" :key="experience.nom" class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <ExpeName :experience="experience" />
+                </div>
+              </div>
+            </div>
+            <p v-else class="loading-message">Chargement des expériences...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Séparateur visuel -->
+    <div class="section-separator"></div>
+
+    <!-- Section Certifications -->
+    <section class="profile-section certifications-section">
+      <div class="section-header">
+        <h2 class="section-title">Mes certifications</h2>
+      </div>
+      <div class="section-content">
+        <div class="certifications-grid" v-if="certifications.length">
+          <CertifName v-for="certification in certifications" :key="certification.nom" :certification="certification" />
+        </div>
+        <p v-else class="loading-message">Chargement des certifications...</p>
+      </div>
+    </section>
+
+    <!-- Modal pour les images -->
+    <div v-if="showModal" class="modal" @click="closeModal">
+      <div class="modal-content">
+        <img :src="getNatureImageUrl(currentImageNature)" alt="Image agrandie">
+        <button class="modal-close" @click.stop="closeModal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal global amélioré pour les images de différents formats -->
+    <div v-if="globalModal" class="global-modal" @click="closeGlobalModal">
+      <div class="global-modal-content" @click.stop>
+        <div class="image-container">
+          <img :src="currentModalImage" alt="Image agrandie" class="global-modal-image">
+        </div>
+        <button class="global-modal-close" @click="closeGlobalModal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-/* Styles globaux */
-.test {
-  font-family: 'Roboto', sans-serif;
-  background-color: rgba(255, 255, 255, 0.3);
-  /* Fond plus transparent */
-  color: #333;
-  margin: 0;
-  padding: 0;
+:root {
+  --primary-dark: #14213d;
+  --primary: #1a2a6c;
+  --primary-light: #2a5298;
+  --accent: #ffd700;
+  --accent-light: #ffe55c;
+  --accent-dark: #d4af37;
+
+  --white: #ffffff;
+  --light: #f5f5f5;
+  --gray-light: #e0e0e0;
+  --gray: #9e9e9e;
+  --gray-dark: #424242;
+  --dark: #212121;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  --font-sans: 'Inter', 'Helvetica', 'Arial', sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: 'Rockwell', serif;
-}
-
-a {
-  color: #333;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: #ffd700;
-}
-
-/* Section À propos de moi */
-.profil-section {
-  padding: 60px 20px;
-  margin: 0 auto;
+/* Container principal */
+.profile-container {
   max-width: 1200px;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Style de bannière noire pour les h1 */
-.profil-section h1 {
-  font-size: 2rem;
-  color: #fff;
-  margin-bottom: 25px;
-  padding: 12px 20px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  border-bottom: 2px solid rgba(255, 215, 0, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  position: relative;
-}
-
-.profil-section h1::after {
-  display: none;
-}
-
-section:hover h1 {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  background-color: rgba(0, 0, 0, 0.9);
-}
-
-.profil-section p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  text-align: justify;
-  margin-bottom: 30px;
-  color: #333;
-}
-
-/* Bouton de téléchargement du CV */
-.btn-cv {
-  display: inline-block;
-  padding: 12px 24px;
-  background-color: rgba(255, 215, 0, 0.1);
-  color: #333;
-  border: 2px solid #ffd700;
-  border-radius: 8px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Section Centres d'intérêt */
-.centres-interet {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 40px;
-}
-
-.centres-interet .item {
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
-  padding: 20px;
-  width: 30%;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.centres-interet .item:hover {
-  transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-}
-
-.centres-interet .item img,
-.centres-interet .item video {
-  width: 100%;
-  max-width: 200px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.centres-interet .item h2 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: #333;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-/* Section Qualités */
-.qualites {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 40px;
-}
-
-.qualites .item {
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
-  padding: 20px;
-  width: 22%;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.qualites .item:hover {
-  transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-}
-
-.qualites .item img {
-  width: 100%;
-  max-width: 150px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.qualites .item h2 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: #333;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.qualites .item h4 {
-  font-size: 1rem;
-  line-height: 1.4;
-  color: #333;
-}
-
-/* Section Compétences */
-.competences {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 40px;
-  justify-content: space-around;
-}
-
-.competence-item {
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
-  padding: 20px;
-  width: 30%;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.competence-item:hover {
-  transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-}
-
-.competence-item img {
-  width: 100%;
-  max-width: 150px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.competence-item h2 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: #333;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.progress-bar {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  height: 10px;
-  margin-top: 10px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.progress {
-  background-color: #ffd700;
-  height: 100%;
-  transition: width 0.3s ease;
-}
-
-/* Section Certifications */
-.certifications {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 40px;
-  justify-content: space-around;
-}
-
-.certification-item {
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
-  padding: 20px;
-  width: 75%;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.certification-item:hover {
-  transform: translateY(-10px);
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-}
-
-.certification-item img {
-  width: 100%;
-  max-width: 250px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.certification-item h2 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: #333;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.certification-item p {
-  font-size: 1rem;
-  color: #333;
-}
-
-/* Section Lycées */
-.lycees {
-  position: relative;
-  padding-left: 20px;
-  margin-top: 40px;
-}
-
-.lycees::before {
-  content: '';
-  position: absolute;
-  left: 9px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background-color: #333;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.lycee-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  position: relative;
-}
-
-.timeline-dot {
-  width: 20px;
-  height: 20px;
-  background-color: #333;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-right: 20px;
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.lycee-item:hover .timeline-dot {
-  transform: scale(1.2);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.lycee-content {
-  flex-grow: 1;
-  transition: transform 0.3s ease;
-}
-
-.lycee-item:hover .lycee-content {
-  transform: translateX(5px);
-}
-
-.profil-section>h1 {
-  margin-top: 60px;
-}
-
-.item,
-.competence-item,
-.certification-item,
-.lycee-item,
-.timeline-dot,
-.lycee-content {
-  transition: all 0.3s ease;
-}
-
-p[v-else] {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #333;
-  padding: 40px 0;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-/* Section Parcours */
-.parcours-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-top: 40px;
-}
-
-.parcours-section {
-  flex: 1;
-  min-width: 300px;
-}
-
-.parcours-subtitle {
-  font-size: 1.6rem;
-  color: #333;
-  margin-bottom: 25px;
-  text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-}
-
-/* Adapter la section experiences comme lycees */
-.experiences {
-  position: relative;
-  padding-left: 20px;
-}
-
-.experiences::before {
-  content: '';
-  position: absolute;
-  left: 9px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background-color: #333;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.experience-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  position: relative;
-}
-
-.experience-item:hover .timeline-dot {
-  transform: scale(1.2);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.experience-content {
-  flex-grow: 1;
-  transition: transform 0.3s ease;
-}
-
-.experience-item:hover .experience-content {
-  transform: translateX(5px);
-}
-
-/* Responsive Design pour le parcours */
-@media (max-width: 768px) {
-  .parcours-container {
-    flex-direction: column;
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .profil-section h1 {
-    font-size: 2rem;
-  }
-
-  .centres-interet .item,
-  .qualites .item,
-  .competence-item,
-  .certification-item {
-    width: 45%;
-  }
-}
-
-@media (max-width: 576px) {
-  .profil-section h1 {
-    font-size: 1.8rem;
-  }
-
-  .centres-interet .item,
-  .qualites .item,
-  .competence-item,
-  .certification-item {
-    width: 100%;
-  }
-}
-
-/* Styles spécifiques pour le carrousel */
-.carousel-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
   margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
-.carousel-content {
+/* Style des sections */
+.profile-section {
+  margin-bottom: 3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.profile-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.section-header {
+  padding: 1.5rem;
+  background-color: rgba(20, 33, 61, 0.9);
   position: relative;
-  flex-grow: 1;
+}
+
+.section-title {
+  color: var(--white);
+  font-size: 1.8rem;
+  margin: 0;
+  letter-spacing: 0.5px;
+  position: relative;
+  display: inline-block;
+  padding-left: 1rem;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: var(--accent);
+  border-radius: var(--radius-sm);
+}
+
+.section-content {
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Carte À propos */
+.about-card {
   display: flex;
   flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--white);
+  margin-bottom: 2rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--accent);
+  color: var(--primary-dark);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+  align-self: flex-start;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  background-color: var(--accent-light);
+}
+
+.btn-icon {
+  margin-right: 0.5rem;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.carousel-btn {
-  display: none;
+/* Grilles pour les cartes */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
 
-.carousel-indicators {
-  display: none;
+/* Cartes d'intérêt */
+.interest-card,
+.quality-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.item.carousel img {
+.interest-card:hover,
+.quality-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  padding: 1.25rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--white);
+  position: relative;
+  padding-left: 1rem;
+}
+
+.card-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background-color: var(--accent);
+  border-radius: var(--radius-sm);
+}
+
+.card-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Nouveau style pour les images avec meilleur ratio */
+.image-wrapper {
+  position: relative;
   width: 100%;
-  max-width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  padding-top: 75%;
+  /* Ratio 4:3 par défaut */
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Style pour l'image zoomée */
-img.zoomed {
-  transform: scale(2);
-  /* Zoom x2 */
-  transition: transform 0.3s ease;
-  cursor: zoom-out;
-}
-
-.modal-overlay {
-  position: fixed;
+.image-wrapper .image-overlay {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  z-index: 2;
+}
+
+.image-wrapper:hover .image-overlay {
+  opacity: 1;
+}
+
+.interest-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Permet d'afficher l'image entière sans déformation */
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-normal);
+}
+
+.image-wrapper:hover .interest-image {
+  transform: scale(1.05);
+}
+
+.zoom-icon {
+  color: #ffffff;
+  background-color: rgba(255, 215, 0, 0.7);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+  z-index: 3;
+}
+
+.image-wrapper:hover .zoom-icon {
+  transform: scale(1);
+}
+
+/* Carrousel */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.carousel-content {
+  position: relative;
+}
+
+/* Supprimer cette règle qui cache les images */
+.card-image {
+  display: none;
+}
+
+/* Ne pas masquer les images du carrousel */
+.carousel-content img {
+  display: block;
+  /* Remplacer "none" par "block" */
+}
+
+/* Style optimisé pour les images du carrousel */
+.image-wrapper .interest-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Changé de "contain" à "cover" pour les images de nature */
+  transition: transform var(--transition-normal);
+}
+
+/* Styles spécifiques pour les autres images d'intérêt */
+.interest-card:not(:first-child) .interest-image {
+  object-fit: contain;
+  /* Garder "contain" pour les autres images */
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  padding: 0 10px;
+  z-index: 3;
+}
+
+.carousel-button {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
+  z-index: 4;
+}
+
+/* Grille de compétences */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Style pour les items de compétence avec animation de scroll reveal */
+.skill-item {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.skill-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ajouter une couleur de début distincte pour voir clairement l'animation */
+.skill-item:nth-child(odd) {
+  transform: translateY(50px) translateX(-20px);
+}
+
+.skill-item:nth-child(even) {
+  transform: translateY(50px) translateX(20px);
+}
+
+.skill-item.revealed:nth-child(odd),
+.skill-item.revealed:nth-child(even) {
+  transform: translateY(0) translateX(0);
+}
+
+/* Supprimer les anciennes animations qui ne sont plus nécessaires */
+.animate-skills>* {
+  animation: none;
+}
+
+@keyframes fadeInUp {
+
+  /* Cette animation n'est plus utilisée, mais on la garde pour compatibilité */
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section Parcours */
+.path-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.path-column {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.column-title {
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid var(--accent);
+  text-align: center;
+}
+
+.timeline-wrapper {
+  position: relative;
+  padding-left: 28px;
+}
+
+.timeline-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 9px;
+  width: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -28px;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  z-index: 1;
+  box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.3);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.timeline-item:hover .timeline-marker {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 6px rgba(255, 215, 0, 0.4);
+}
+
+.timeline-content {
+  padding-bottom: 1rem;
+}
+
+/* Grille de certifications */
+.certifications-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Message de chargement */
+.loading-message {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--white);
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
+  padding: 2rem;
 }
 
 .modal-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
 }
 
 .modal-content img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  margin: auto;
-  /* Assure un centrage vertical et horizontal */
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background-color: var(--accent);
+  color: var(--primary-dark);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.modal-close:hover {
+  background-color: var(--accent-light);
+  transform: rotate(90deg);
+}
+
+/* Nouvelle grille pour les qualités avec icônes */
+.qualities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.quality-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.quality-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.quality-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(255, 215, 0, 0.1);
+  margin-bottom: 1rem;
+  color: var(--accent);
+  transition: all var(--transition-normal);
+}
+
+.quality-card:hover .quality-icon {
+  transform: scale(1.1);
+  background-color: rgba(255, 215, 0, 0.2);
+}
+
+.quality-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+/* Styles pour le modal global */
+.global-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.global-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: scaleIn 0.3s ease;
+}
+
+.image-container {
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.global-modal-image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  /* Affiche l'image complète sans la déformer */
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.global-modal-close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background-color: var(--accent);
+  color: var(--primary-dark);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.global-modal-close:hover {
+  transform: rotate(90deg);
+  background-color: var(--accent-light);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Séparateur stylisé entre les sections */
+.section-separator {
+  height: 2rem;
+  margin: 2rem 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-separator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.5), transparent);
+}
+
+@media (max-width: 576px) {
+  .section-separator {
+    margin: 1.5rem 0;
+  }
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .path-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .about-card {
+    padding: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
 }
 </style>
