@@ -299,7 +299,7 @@ watch(competences, () => {
         <div class="about-card">
           <div class="about-info">
             <p class="about-text">
-              Je m'appelle LEDA Mathis, je suis âgé de 18 ans. Je suis actuellement étudiant au lycée de Baimbridge, en
+              Je m'appelle LEDA Mathis, je suis âgé de 20 ans. Je suis actuellement étudiant au lycée de Baimbridge, en
               première année de BTS Services Informatiques aux Organisations.
               Depuis que je suis petit, j'ai toujours été attiré par l'informatique et les nouvelles technologies. De ce
               fait,
