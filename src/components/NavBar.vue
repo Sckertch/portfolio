@@ -1,28 +1,29 @@
 <template>
-    <div class="bandeau">
-        <div class="name">
-            <router-link to="/">
-                <p>LEDA Mathis</p>
-            </router-link>    
-        </div>
+    <header class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <router-link to="/">
+                    <h1 class="brand-name">LEDA Mathis</h1>
+                </router-link>
+            </div>
 
-            <!-- Bouton hamburger -->
-        <div class="hamburger" @click="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+            <div class="navbar-toggle" @click="toggleMenu" :class="{ 'is-active': isMenuOpen }">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
-        <nav :class="['navbar', { open: isMenuOpen }]">
-            <ul @click="hideMenu()">
-                <li><router-link to="/">ACCUEIL</router-link></li>
-                <li><router-link to="/profil">PROFIL</router-link></li>
-                <li><router-link to="/bts">BTS SIO</router-link></li>
-                <li><router-link to="/projet">PROJET</router-link></li>
-                <li><router-link to="/veille">VEILLE</router-link></li>
-            </ul>
-        </nav>
-  </div>
+            <nav class="navbar-menu" :class="{ 'is-active': isMenuOpen }">
+                <ul class="navbar-nav">
+                    <li><router-link to="/" @click="hideMenu">ACCUEIL</router-link></li>
+                    <li><router-link to="/profil" @click="hideMenu">PROFIL</router-link></li>
+                    <li><router-link to="/bts" @click="hideMenu">BTS SIO</router-link></li>
+                    <li><router-link to="/projet" @click="hideMenu">PROJET</router-link></li>
+                    <li><router-link to="/veille" @click="hideMenu">VEILLE</router-link></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 </template>
 
 <script setup>
@@ -37,153 +38,204 @@ function toggleMenu() {
 function hideMenu() {
     isMenuOpen.value = false;
 }
-
-
 </script>
 
 <style lang="scss">
-.bandeau {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #000; /* Fond noir */
-    padding: 0 20px;
-    height: 70px;
-    color: #fff; /* Texte blanc */
-    font-size: 16px;
-    font-weight: bold;
-    font-family: 'Roboto', sans-serif;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Ombre légère */
+:root {
+    --accent: #ffd700;
+    --white: #ffffff;
+    --text-sm: 0.875rem;
+    --text-lg: 1.125rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --transition-normal: 0.3s ease;
+}
+
+.navbar {
     position: sticky;
     top: 0;
+    width: 100%;
+    background-color: rgba(20, 33, 61, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    padding: 0.75rem 0;
     z-index: 1000;
-    width: 100%; /* Prend toute la largeur */
 
-    .name {
-        padding-top: 14px;
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 var(--space-md);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
 
-        a {
-            text-decoration: none;
-            color: #fff; /* Texte blanc */
-            font-size: 20px;
-            font-weight: 700;
-            transition: color 0.3s ease;
+.navbar-brand {
+    .brand-name {
+        color: var(--accent);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: 0.5px;
+        position: relative;
+        transition: all var(--transition-normal);
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width var(--transition-normal);
         }
 
         &:hover {
-            color: #ffd700; /* Changement de couleur au survol (jaune doré) */
+            transform: translateY(-2px);
+
+            &::after {
+                width: 100%;
+            }
         }
     }
+}
 
-    .hamburger {
-        display: none;
-        flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
+.navbar-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    cursor: pointer;
 
-        div {
-            width: 25px;
-            height: 3px;
-            background-color: #fff; /* Couleur des barres du hamburger */
-            transition: transform 0.3s, opacity 0.3s;
+    span {
+        display: block;
+        height: 2px;
+        width: 100%;
+        background-color: var(--white);
+        transition: all var(--transition-normal);
+    }
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            margin: 0 var(--space-sm);
+            display: inline-block;
+
+            a {
+                display: block;
+                font-size: var(--text-sm);
+                font-weight: 600;
+                letter-spacing: 1px;
+                color: var(--white);
+                padding: 0.5rem 0.75rem;
+                position: relative;
+                transition: all var(--transition-normal);
+                white-space: nowrap;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background-color: var(--accent);
+                    transition: width var(--transition-normal);
+                }
+
+                &:hover,
+                &.router-link-active {
+                    color: var(--accent);
+
+                    &::after {
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
+}
 
-    .navbar {
-        padding-top: 23px;
-        ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
+@media (max-width: 768px) {
+    .navbar-toggle {
+        display: flex;
+        z-index: 20;
+    }
+
+    .navbar-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: rgba(20, 33, 61, 0.98);
+        padding-top: 5rem;
+        transition: right var(--transition-normal);
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        /* Centrer horizontalement le contenu */
+
+        &.is-active {
+            right: 0;
+        }
+
+        .navbar-nav {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            /* S'assurer que la liste prend toute la largeur */
+            padding: 0;
+            /* Éliminer le padding par défaut de la liste */
 
             li {
-                margin: 0;
+                margin: var(--space-sm) 0;
+                width: 100%;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                /* Centrer les éléments li */
 
                 a {
-                    text-decoration: none;
-                    color: #fff; /* Texte blanc */
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    transition: background-color 0.3s, color 0.3s, transform 0.3s;
-
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.1); /* Fond léger au survol */
-                        color: #ffd700; /* Changement de couleur au survol (jaune doré) */
-                        transform: translateY(-2px); /* Effet de levée */
-                    }
+                    padding: var(--space-sm) 0;
+                    font-size: var(--text-lg);
+                    width: 80%;
+                    /* Limiter la largeur du lien pour meilleur centrage */
+                    display: flex;
+                    justify-content: center;
+                    /* Centrer le texte dans le lien */
                 }
             }
         }
     }
 
-    /* Media query pour les écrans de petite taille */
-    @media (max-width: 655px) {
-        .hamburger {
-            display: flex;
-        }
+    .navbar-toggle.is-active {
+        span {
+            &:first-child {
+                transform: translateY(9px) rotate(45deg);
+            }
 
-        .navbar {
-            display: none;
-            position: absolute;
-            top: 70px;
-            right: 0;
-            background-color: #000; /* Fond noir */
-            width: 100%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+            &:nth-child(2) {
+                opacity: 0;
+            }
 
-            ul {
-                flex-direction: column;
-                padding: 0;
-                margin: 0;
-
-                li {
-                    width: 100%;
-                    text-align: center;
-
-                    a {
-                        display: block;
-                        padding: 12px;
-                    }
-                }
+            &:last-child {
+                transform: translateY(-9px) rotate(-45deg);
             }
         }
-
-        .navbar.open {
-            display: flex;
-            flex-direction: column;
-            animation: slideDown 0.3s ease forwards;
-        }
-    }
-
-    /* Animation pour le menu déroulant */
-    @keyframes slideDown {
-        from {
-            transform: translateY(-20px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
     }
 }
-
-@media (max-width: 655px) {
-    .bandeau {
-        display: flex;
-        align-items: center;
-        width: 100%;
-
-        .name {
-            flex: 1;
-            text-align: center;
-        }
-
-        .navbar {
-            flex: 0;
-            margin-left: auto;
-        }
-    }
-}
-</style> 
+</style>
