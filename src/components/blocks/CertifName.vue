@@ -32,7 +32,10 @@
 import { defineProps, defineEmits, computed } from 'vue';
 
 const props = defineProps({
-  certification: Object
+  certification: {
+    type: Object,
+    required: true
+  }
 });
 
 const emit = defineEmits(['image-click']);
@@ -43,7 +46,9 @@ const imageUrl = computed(() => {
 
 // Fonction pour émettre un événement pour ouvrir le modal global
 const emitImageClick = () => {
+  // S'assurer qu'on transmet bien l'URL de l'image
   emit('image-click', imageUrl.value);
+  console.log('Image clicked:', imageUrl.value); // Log pour déboguer
 };
 </script>
 
@@ -98,7 +103,7 @@ const emitImageClick = () => {
 
 .certification-image-container {
   position: relative;
-  cursor: pointer;
+  cursor: zoom-in;
   overflow: hidden;
   border-radius: 8px;
   /* Utiliser aspect-ratio pour maintenir une proportion */

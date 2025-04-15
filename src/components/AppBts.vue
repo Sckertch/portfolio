@@ -688,6 +688,8 @@ p {
     border-radius: 12px;
     position: relative;
     overflow: hidden;
+    min-width: 100px;
+    /* Ajout d'une largeur minimale */
 }
 
 .skill-bar {
@@ -785,6 +787,7 @@ p {
     }
 }
 
+/* Media queries */
 @media (max-width: 768px) {
     .bts-intro {
         flex-direction: column;
@@ -805,11 +808,29 @@ p {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        /* Augmenter l'espace entre les barres */
     }
 
     .skill-name {
         width: 100%;
         padding-right: 0;
+        margin-bottom: 0.25rem;
+        /* Ajouter un peu d'espace sous le nom */
+        font-weight: 500;
+        /* Rendre le nom un peu plus visible */
+    }
+
+    .skill-bar-wrapper {
+        width: 100%;
+        /* Utiliser toute la largeur disponible */
+        height: 30px;
+        /* Augmenter la hauteur pour une meilleure visibilité */
+    }
+
+    .skill-percentage {
+        font-size: 1rem;
+        /* Légèrement plus grand sur mobile */
     }
 }
 
@@ -828,6 +849,21 @@ p {
 
     .section-separator {
         margin: 1.5rem 0;
+    }
+
+    .skills-comparison {
+        padding: 1rem;
+        /* Réduire le padding sur très petit écran */
+    }
+
+    .comparison-title {
+        font-size: 1.1rem;
+        /* Réduire légèrement la taille du titre */
+    }
+
+    .skill-bar-wrapper {
+        height: 35px;
+        /* Encore plus grand sur très petits écrans */
     }
 }
 </style>

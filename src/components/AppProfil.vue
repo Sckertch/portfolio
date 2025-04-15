@@ -553,7 +553,8 @@ watch(competences, () => {
       </div>
       <div class="section-content">
         <div class="certifications-grid" v-if="certifications.length">
-          <CertifName v-for="certification in certifications" :key="certification.nom" :certification="certification" />
+          <CertifName v-for="certification in certifications" :key="certification.nom" :certification="certification"
+            @image-click="openGlobalModal" />
         </div>
         <p v-else class="loading-message">Chargement des certifications...</p>
       </div>
