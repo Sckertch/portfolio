@@ -8,7 +8,7 @@ class Conn {
     public function connect()
     {
         try { 
-            $mysqli = new mysqli("45.45.219.189", "Samuel", 'U3f8!5m77uG36a%', "portfolio", 3306);
+            $mysqli = new mysqli("45.45.219.189", "portfolio", 'E]ws.6mCvY_bH(86', "portfolio", 3306);
             return $mysqli;
         }
         catch (Exception $e) {

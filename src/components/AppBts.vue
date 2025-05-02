@@ -1,20 +1,5 @@
 <template>
     <div class="profile-container">
-        <section class="profile-section bts-header-section">
-            <div class="section-header">
-                <h2 class="section-title">BTS Services Informatiques aux Organisations</h2>
-            </div>
-            <div class="section-content">
-                <div class="bts-intro">
-                    <img src="https://portoimages.duckdns.org/sio.png" alt="Logo BTS SIO" class="bts-logo">
-                    <p class="tagline">Formation diplômante de niveau Bac+2 aux métiers de l'informatique</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Séparateur visuel -->
-        <div class="section-separator"></div>
-
         <section class="profile-section bts-overview-section">
             <div class="section-header">
                 <h2 class="section-title">Présentation générale</h2>
@@ -189,141 +174,11 @@
                 </div>
             </div>
         </section>
-
-        <!-- Séparateur visuel -->
-        <div class="section-separator"></div>
-
-        <section class="profile-section bts-compare-section animate-on-scroll">
-            <div class="section-header">
-                <h2 class="section-title">Comparaison des options</h2>
-            </div>
-            <div class="section-content">
-                <div class="option-tabs">
-                    <button class="option-tab" :class="{ active: selectedOption === 'SLAM' }"
-                        @click="switchOption('SLAM')">
-                        SLAM
-                    </button>
-                    <button class="option-tab" :class="{ active: selectedOption === 'SISR' }"
-                        @click="switchOption('SISR')">
-                        SISR
-                    </button>
-                </div>
-
-                <div class="skills-comparison">
-                    <h3 class="comparison-title">Compétences en {{ selectedOption }}</h3>
-                    <div class="skills-bars">
-                        <div v-for="(skill, index) in displayedSkills" :key="`${selectedOption}-${skill.name}`"
-                            class="skill-bar-container">
-                            <div class="skill-name">{{ skill.name }}</div>
-                            <div class="skill-bar-wrapper">
-                                <div class="skill-bar" :style="{
-                                    width: `${skill.level}%`,
-                                    backgroundColor: skill.color,
-                                    animationDelay: `${index * 0.1}s`
-                                }"></div>
-                                <span class="skill-percentage">{{ skill.level }}%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="option-description">
-                    <div v-if="selectedOption === 'SLAM'" class="option-detail animate-on-scroll">
-                        <p>L'option SLAM forme aux métiers du développement d'applications. Les étudiants acquièrent des
-                            compétences en programmation, conception logicielle, bases de données et frameworks web
-                            modernes.</p>
-                        <div class="tech-highlights">
-                            <span class="tech-tag">Java</span>
-                            <span class="tech-tag">PHP</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">SQL</span>
-                            <span class="tech-tag">Frameworks Web</span>
-                        </div>
-                    </div>
-                    <div v-else class="option-detail animate-on-scroll">
-                        <p>L'option SISR prépare aux métiers des réseaux et systèmes. Les étudiants développent des
-                            compétences en administration système, configuration réseau, virtualisation et
-                            cybersécurité.</p>
-                        <div class="tech-highlights">
-                            <span class="tech-tag">Windows Server</span>
-                            <span class="tech-tag">Linux</span>
-                            <span class="tech-tag">Réseaux</span>
-                            <span class="tech-tag">Virtualisation</span>
-                            <span class="tech-tag">Sécurité</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Séparateur visuel -->
-        <div class="section-separator"></div>
-
-        <section class="profile-section bts-personal-section">
-            <div class="section-header">
-                <h2 class="section-title">Mon parcours en BTS SIO</h2>
-            </div>
-            <div class="section-content">
-                <div class="personal-container">
-                    <p>
-                        J'ai choisi la formation BTS SIO, option SLAM, pour approfondir ma passion pour le développement
-                        d'applications. Attiré par l'informatique depuis mon plus jeune âge, cette formation me permet
-                        d'acquérir des compétences techniques solides tout en me préparant au monde professionnel.
-                    </p>
-                    <p>
-                        Ce que j'apprécie particulièrement dans cette formation :
-                    </p>
-                    <ul>
-                        <li>L'équilibre entre théorie et pratique</li>
-                        <li>Les projets en équipe qui reflètent les conditions réelles de travail</li>
-                        <li>La découverte de nombreux langages et technologies</li>
-                        <li>L'opportunité de créer des applications complètes</li>
-                        <li>Les stages qui m'ont permis de mettre en application mes connaissances</li>
-                    </ul>
-                    <p>
-                        Cette formation constitue une base solide pour mon projet professionnel : devenir développeur
-                        full-stack
-                        spécialisé dans les applications web innovantes.
-                    </p>
-                </div>
-            </div>
-        </section>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-
-// Données pour le comparatif des compétences
-const skills = {
-    SLAM: [
-        { name: "Développement", level: 90, color: "#4a8af4" },
-        { name: "Base de données", level: 85, color: "#49c5b6" },
-        { name: "Frameworks", level: 80, color: "#f49a4a" },
-        { name: "Applications web", level: 85, color: "#f44a9a" },
-        { name: "Gestion de projet", level: 75, color: "#9a4af4" }
-    ],
-    SISR: [
-        { name: "Réseau", level: 85, color: "#4a8af4" },
-        { name: "Systèmes", level: 90, color: "#49c5b6" },
-        { name: "Sécurité", level: 85, color: "#f49a4a" },
-        { name: "Infrastructure", level: 90, color: "#f44a9a" },
-        { name: "Support", level: 80, color: "#9a4af4" }
-    ]
-};
-
-// Option sélectionnée
-const selectedOption = ref('SLAM');
-
-// Compétences actuellement affichées
-const displayedSkills = computed(() => {
-    return skills[selectedOption.value];
-});
-
-// Fonction pour changer d'option
-const switchOption = (option) => {
-    selectedOption.value = option;
-};
+import { onMounted } from 'vue';
 
 // Gérer l'animation au défilement
 const setupScrollAnimation = () => {
@@ -578,25 +433,6 @@ p {
     margin-bottom: 0.75rem;
 }
 
-/* Section personnelle */
-.personal-container {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.personal-container ul {
-    list-style-type: disc;
-    padding-left: 1.5rem;
-    margin-bottom: 1.25rem;
-}
-
-.personal-container li {
-    color: #e0e0e0;
-    margin-bottom: 0.75rem;
-}
-
 /* Séparateur stylisé entre les sections */
 .section-separator {
     height: 2rem;
@@ -615,143 +451,6 @@ p {
     right: 0;
     height: 1px;
     background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.5), transparent);
-}
-
-/* Styles pour la comparaison d'options */
-.option-tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-    gap: 1rem;
-}
-
-.option-tab {
-    padding: 0.75rem 2rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px solid transparent;
-    border-radius: 8px;
-    color: #e0e0e0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.option-tab:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-3px);
-}
-
-.option-tab.active {
-    background-color: rgba(255, 215, 0, 0.2);
-    border-color: #ffd700;
-    color: #ffd700;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
-}
-
-.skills-comparison {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.comparison-title {
-    color: #fff;
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
-.skills-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.skill-bar-container {
-    display: flex;
-    align-items: center;
-}
-
-.skill-name {
-    width: 120px;
-    font-size: 0.9rem;
-    color: #e0e0e0;
-    padding-right: 1rem;
-}
-
-.skill-bar-wrapper {
-    flex: 1;
-    height: 25px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    position: relative;
-    overflow: hidden;
-    min-width: 100px;
-    /* Ajout d'une largeur minimale */
-}
-
-.skill-bar {
-    height: 100%;
-    border-radius: 12px;
-    transform-origin: left;
-    animation: skill-fill 1s ease forwards;
-    position: relative;
-}
-
-.skill-percentage {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes skill-fill {
-    0% {
-        width: 0;
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.option-description {
-    padding: 1rem;
-    min-height: 150px;
-    transition: all 0.3s ease;
-}
-
-.option-detail {
-    animation: fade-in 0.5s ease forwards;
-}
-
-.tech-highlights {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.tech-tag {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: rgba(26, 42, 108, 0.6);
-    color: #fff;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-}
-
-.tech-tag:hover {
-    background-color: rgba(255, 215, 0, 0.3);
-    transform: translateY(-3px) scale(1.05);
 }
 
 /* Animation au défilement */
@@ -777,60 +476,12 @@ p {
     }
 }
 
-@keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
 /* Media queries */
 @media (max-width: 768px) {
-    .bts-intro {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .bts-logo {
-        margin-right: 0;
-        margin-bottom: 1.5rem;
-    }
 
     .competences-grid,
     .debouches-container {
         grid-template-columns: 1fr;
-    }
-
-    .skill-bar-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-        /* Augmenter l'espace entre les barres */
-    }
-
-    .skill-name {
-        width: 100%;
-        padding-right: 0;
-        margin-bottom: 0.25rem;
-        /* Ajouter un peu d'espace sous le nom */
-        font-weight: 500;
-        /* Rendre le nom un peu plus visible */
-    }
-
-    .skill-bar-wrapper {
-        width: 100%;
-        /* Utiliser toute la largeur disponible */
-        height: 30px;
-        /* Augmenter la hauteur pour une meilleure visibilité */
-    }
-
-    .skill-percentage {
-        font-size: 1rem;
-        /* Légèrement plus grand sur mobile */
     }
 }
 
@@ -849,21 +500,6 @@ p {
 
     .section-separator {
         margin: 1.5rem 0;
-    }
-
-    .skills-comparison {
-        padding: 1rem;
-        /* Réduire le padding sur très petit écran */
-    }
-
-    .comparison-title {
-        font-size: 1.1rem;
-        /* Réduire légèrement la taille du titre */
-    }
-
-    .skill-bar-wrapper {
-        height: 35px;
-        /* Encore plus grand sur très petits écrans */
     }
 }
 </style>

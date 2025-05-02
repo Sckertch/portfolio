@@ -1,7 +1,7 @@
 <template>
     <section class="profile-section stage-section">
         <div class="section-header">
-            <h2 class="section-title">Stages</h2>
+            <h2 class="section-title">En entreprise</h2>
         </div>
         <div class="section-content">
             <div class="stage-card">
@@ -57,7 +57,7 @@
                                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                         </svg>
                                     </span>
-                                    <span class="task-text">Gestion de projet</span>
+                                    <span class="task-text">Gestion de projet (OpenProject)</span>
                                 </li>
                                 <li>
                                     <span class="task-icon">
@@ -70,6 +70,20 @@
                                         </svg>
                                     </span>
                                     <span class="task-text">Compte rendu client</span>
+                                </li>
+                                <li>
+                                    <span class="task-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="18" r="3"></circle>
+                                            <circle cx="6" cy="6" r="3"></circle>
+                                            <circle cx="18" cy="6" r="3"></circle>
+                                            <path d="M6 9v3a6 6 0 0 0 6 6"></path>
+                                            <path d="M18 9a9 9 0 0 1-9 9"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="task-text">Gestion des branches Git (GitLab)</span>
                                 </li>
                                 <li>
                                     <span class="task-icon">
@@ -89,15 +103,25 @@
                         </div>
                     </div>
 
-                    <div class="stage-skills">
-                        <h4>Technologies utilisées</h4>
+                    <div class="stage-skills p-2 rounded">
+                        <h4>Outils et Technologies utilisées</h4>
                         <div class="skill-tags">
-                            <span class="skill-tag">Vue.js</span>
+                            <span class="skill-tag">Postman</span>
+                            <span class="skill-tag">Talend</span>
+                            <span class="skill-tag">GitLab</span>
+                            <span class="skill-tag">VSCode</span>
+                            <span class="skill-tag">OpenProject</span>
+                            <span class="skill-tag">VueJS</span>
                             <span class="skill-tag">PHP</span>
-                            <span class="skill-tag">HTML/CSS</span>
-                            <span class="skill-tag">JavaScript</span>
-                            <span class="skill-tag">Git</span>
                             <span class="skill-tag">MySQL</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">Shell Bash</span>
+                            <span class="skill-tag">FileZilla</span>
+                            <span class="skill-tag">Git</span>
+                            <span class="skill-tag">Claude 3.7 Sonnet</span>
+                            <span class="skill-tag">DBDiagram.io</span>
+                            <span class="skill-tag">Moqups</span>
+                            <span class="skill-tag">Trello</span>
                         </div>
                     </div>
 
@@ -331,6 +355,8 @@ onBeforeUnmount(() => {
 
 .stage-skills {
     margin-bottom: 1.5rem;
+    background-color: rgb(49, 72, 173);
+
 }
 
 .stage-skills h4 {

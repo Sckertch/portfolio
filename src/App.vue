@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <NavBar />
-    <Transition name="page" mode="out-in">
-      <router-view />
-    </Transition>
+    <NavBar class="nav-fixed" />
+    <div class="main-content">
+      <Transition name="page" mode="out-in">
+        <router-view />
+      </Transition>
+    </div>
     <FlouterDown />
   </div>
 </template>
@@ -182,6 +184,45 @@ ol {
 
 .bg-accent {
   background-color: var(--accent);
+}
+
+/* Styles pour la NavBar fixe */
+.nav-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+}
+
+/* Espace pour le contenu principal sous la navbar fixe */
+.main-content {
+  width: 100%;
+  margin-top: 60px;
+  /* Ajustez cette valeur selon la hauteur réelle de votre NavBar */
+  padding-top: var(--space-md);
+}
+
+/* Appliquer directement au composant NavBar */
+#app>nav,
+#app>.navbar,
+#app>.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+
+/* Ajouter de l'espace pour le contenu sous la navbar fixe */
+#app>.router-view-container,
+#app>router-view {
+  margin-top: var(--space-xl);
+  /* Ajustez cette valeur selon la hauteur de votre NavBar */
+  width: 100%;
 }
 
 @media (max-width: 768px) {

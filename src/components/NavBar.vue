@@ -18,7 +18,7 @@
                     <li><router-link to="/" @click="hideMenu">ACCUEIL</router-link></li>
                     <li><router-link to="/profil" @click="hideMenu">PROFIL</router-link></li>
                     <li><router-link to="/bts" @click="hideMenu">BTS SIO</router-link></li>
-                    <li><router-link to="/projet" @click="hideMenu">PROJET</router-link></li>
+                    <li><router-link to="/projet" @click="hideMenu">RÉALISATIONS PROFESSIONNELLES</router-link></li>
                     <li><router-link to="/veille" @click="hideMenu">VEILLE</router-link></li>
                 </ul>
             </nav>

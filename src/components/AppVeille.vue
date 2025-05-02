@@ -147,7 +147,7 @@
     <!-- Section articles et ressources -->
     <section class="profile-section resources-section">
       <div class="section-header">
-        <h2 class="section-title">Ressources et Articles</h2>
+        <h2 class="section-title">Quelques Articles</h2>
       </div>
       <div class="section-content">
         <div class="resources-list">
@@ -201,7 +201,7 @@
                   <circle cx="5" cy="19" r="1"></circle>
                 </svg>
               </span>
-              <span class="method-text">Suivi quotidien des sources spécialisées via des flux RSS</span>
+              <span class="method-text">Consultation quotidienne de mon fil Google</span>
             </li>
             <li>
               <span class="method-icon">

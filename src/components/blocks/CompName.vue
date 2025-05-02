@@ -1,31 +1,28 @@
 <template>
     <div class="skill-card">
-        <div class="skill-header">
+        <div class="skill-name">
             <h3 class="skill-title">{{ competence.nom }}</h3>
         </div>
-        <div class="skill-body">
-            <div class="skill-image-container" @click="emitImageClick">
-                <img :src="imageUrl" alt="Image de la compétence" class="skill-image">
-                <div class="image-overlay">
-                    <span class="zoom-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            <line x1="11" y1="8" x2="11" y2="14"></line>
-                            <line x1="8" y1="11" x2="14" y2="11"></line>
-                        </svg>
-                    </span>
-                </div>
+        <div class="skill-progress">
+            <div class="progress-label">
+                <span class="progress-value">{{ competence.niveau }}%</span>
             </div>
-            <div class="skill-progress">
-                <div class="progress-label">
-                    <span>Niveau de maîtrise</span>
-                    <span class="progress-value">{{ competence.niveau }}%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress" :style="{ width: competence.niveau + '%' }"></div>
-                </div>
+            <div class="progress-bar">
+                <div class="progress" :style="{ width: competence.niveau + '%' }"></div>
+            </div>
+        </div>
+        <div class="skill-image-container" @click="emitImageClick">
+            <img :src="imageUrl" alt="Image de la compétence" class="skill-image">
+            <div class="image-overlay">
+                <span class="zoom-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                </span>
             </div>
         </div>
     </div>
@@ -57,28 +54,29 @@ const emitImageClick = () => {
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-    height: 100%;
     display: flex;
-    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
 }
 
 .skill-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.skill-header {
-    padding: 1.25rem;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.skill-name {
+    min-width: 150px;
+    max-width: 200px;
 }
 
 .skill-title {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     color: #ffffff;
     position: relative;
-    padding-left: 1rem;
+    padding-left: 0.8rem;
 }
 
 .skill-title::before {
@@ -93,72 +91,14 @@ const emitImageClick = () => {
     border-radius: 2px;
 }
 
-.skill-body {
-    padding: 1.25rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.skill-image-container {
-    position: relative;
-    margin-bottom: 1.25rem;
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.skill-image {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: contain;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
-
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.zoom-icon {
-    color: #ffffff;
-    background-color: rgba(255, 215, 0, 0.7);
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: scale(0.8);
-    transition: transform 0.3s ease;
-}
-
-.skill-image-container:hover .image-overlay {
-    opacity: 1;
-}
-
-.skill-image-container:hover .zoom-icon {
-    transform: scale(1);
-}
-
 .skill-progress {
-    margin-top: auto;
+    flex: 1;
+    margin: 0 1rem;
 }
 
 .progress-label {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 0.5rem;
     color: #ffffff;
@@ -201,6 +141,60 @@ const emitImageClick = () => {
     animation: shimmer 2s infinite;
 }
 
+.skill-image-container {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+}
+
+.skill-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.zoom-icon {
+    color: #ffffff;
+    background-color: rgba(255, 215, 0, 0.7);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.skill-image-container:hover .image-overlay {
+    opacity: 1;
+}
+
+.skill-image-container:hover .zoom-icon {
+    transform: scale(1);
+}
+
 @keyframes shimmer {
     100% {
         transform: translateX(100%);
@@ -208,15 +202,27 @@ const emitImageClick = () => {
 }
 
 @media (max-width: 768px) {
-    .skill-title {
-        font-size: 1.1rem;
+    .skill-card {
+        flex-direction: column;
+        padding: 0.75rem;
     }
-}
 
-/* Supprimez tout le code du modal local car il sera remplacé par le modal global */
-.skill-modal,
-.modal-content,
-.modal-close {
-    display: none;
+    .skill-name {
+        min-width: auto;
+        max-width: 100%;
+        width: 100%;
+        margin-bottom: 0.75rem;
+    }
+
+    .skill-progress {
+        width: 100%;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .skill-image-container {
+        width: 50px;
+        height: 50px;
+        align-self: center;
+    }
 }
 </style>

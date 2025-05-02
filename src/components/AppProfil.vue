@@ -4,6 +4,7 @@ import CompName from './blocks/CompName.vue';
 import CertifName from './blocks/CertifName.vue';
 import LyceeName from './blocks/LyceeName.vue';
 import ExpeName from './blocks/ExpeName.vue';
+import OutilsName from './blocks/OutilsName.vue';
 
 // Variable pour le carrousel d'images de nature
 const nombreImagesNature = ref(3); // Nombre d'images à afficher dans le carrousel
@@ -43,6 +44,7 @@ const competences = ref([]);
 const certifications = ref([]);
 const lycees = ref([]);
 const experiences = ref([]);
+const outils = ref([]);
 
 const getCompetences = () => {
   fetch('https://axilio.duckdns.org/competence/getcompetence')
@@ -80,6 +82,16 @@ const getExperiences = () => {
     .then(data => {
       experiences.value = data.content;
       console.log("experiences du fetch", experiences.value);
+    })
+    .catch(error => console.error(error));
+};
+
+const getOutils = () => {
+  fetch('https://axilio.duckdns.org/outil/getoutils')
+    .then(response => response.json())
+    .then(data => {
+      outils.value = data.content;
+      console.log("outils du fetch", outils.value);
     })
     .catch(error => console.error(error));
 };
@@ -239,10 +251,12 @@ onMounted(() => {
   getCertifications();
   getLycees();
   getExperiences();
+  getOutils();
   console.log("experiences", experiences.value);
   console.log("competences", competences.value);
   console.log("certifications", certifications.value);
   console.log("lycees", lycees.value);
+  console.log("outils", outils.value);
   startAutoScroll();
 
   // Attendre que le composant soit rendu et que les données soient chargées
@@ -334,13 +348,13 @@ watch(competences, () => {
           <!-- Carrousel pour La nature avec meilleure gestion des images -->
           <div class="interest-card">
             <div class="card-header">
-              <h3 class="card-title">La nature</h3>
+              <h3 class="card-title">Le Landscaping</h3>
             </div>
             <div class="card-body">
               <div class="carousel-container">
                 <div class="carousel-content">
                   <div class="image-wrapper" @click="openGlobalModal(getNatureImageUrl(currentImageNature))">
-                    <img :src="getNatureImageUrl(currentImageNature)" alt="Image de la nature" class="interest-image">
+                    <img :src="getNatureImageUrl(currentImageNature)" alt="Image de landscape" class="interest-image">
                     <div class="image-overlay">
                       <span class="zoom-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -499,6 +513,25 @@ watch(competences, () => {
           </div>
         </div>
         <p v-else class="loading-message">Chargement des compétences...</p>
+      </div>
+    </section>
+
+    <!-- Séparateur visuel -->
+    <div class="section-separator"></div>
+
+    <!-- Section outils -->
+    <section class="profile-section tools-section">
+      <div class="section-header">
+        <h2 class="section-title">Mes outils</h2>
+      </div>
+      <div class="section-content">
+        <div class="tools-grid" v-if="outils.length">
+          <div v-for="(outil, index) in outils" :key="outil.nom" class="tool-item">
+            <OutilsName :outil="outil"
+              @image-click="openGlobalModal(`https://portoimages.duckdns.org/${outil.image}`)" />
+          </div>
+        </div>
+        <p v-else class="loading-message">Chargement des outils...</p>
       </div>
     </section>
 
@@ -1037,6 +1070,28 @@ watch(competences, () => {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
+}
+
+/* Grille pour les outils */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+.tool-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  text-align: center;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.tool-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Message de chargement */

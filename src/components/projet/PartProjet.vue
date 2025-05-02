@@ -1,7 +1,7 @@
 <template>
     <section class="profile-section projects-section">
         <div class="section-header">
-            <h2 class="section-title">Mes projets</h2>
+            <h2 class="section-title">Projets</h2>
         </div>
         <div class="section-content">
             <div class="projects-grid" v-if="projets.length">
