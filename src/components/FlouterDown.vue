@@ -2,7 +2,9 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
-                <img src="https://portoimages.duckdns.org/logo.png" alt="Mon Logo" class="logo" />
+                <img src="https://portoimages.duckdns.org/logo.png" alt="Mon Logo" class="logo rounded-3" />
+                <!-- Remplacer l'image par un logo textuel -->
+                <!-- <div class="text-logo">LM</div>-->
             </div>
 
             <div class="footer-social">
@@ -91,7 +93,8 @@ export default {
 }
 
 .footer-logo .logo {
-    width: 100px;
+    width: 175px;
+    /* Augmenté de 100px à 150px pour un logo plus grand */
     height: auto;
 }
 
@@ -187,6 +190,21 @@ h3 {
 
 .close:hover {
     color: #e74c3c;
+}
+
+/* Style pour le logo textuel */
+.text-logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #3498db;
+    background-color: #1a2836;
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: inline-block;
+    letter-spacing: -2px;
+    font-family: 'Arial', sans-serif;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+    border: 2px solid #3498db;
 }
 
 @media (max-width: 768px) {
